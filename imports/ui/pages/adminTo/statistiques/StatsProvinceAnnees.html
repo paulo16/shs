@@ -1,0 +1,68 @@
+<template name="PageStatsProvinceAnnees">
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="card-box">
+                <h4 class="header-title m-t-0 m-b-30">Montant Global</h4>
+                <div class="widget-chart-1">
+
+                    <div class="widget-detail-1">
+                        <h2 class="p-t-10 m-b-0" id="montant-total"></h2><span></span>
+                        <p class="text-muted">Dirhams Montant total</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card-box">
+                <h4 class="header-title m-t-0 m-b-30">Client Global</h4>
+                <div class="widget-chart-1">
+
+                    <div class="widget-detail-1">
+                        <h2 class="p-t-10 m-b-0" id="nbre-client"></h2>
+                        <p class="text-muted">Nombre client total</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card-box">
+                <h4 class="header-title m-t-0 m-b-30">Province</h4>
+                <div class="widget-chart-1">
+
+                    <div class="widget-detail-1">
+                        <h2 class="p-t-10 m-b-0" id="nbre-province"></h2>
+                        <p class="text-muted">Nombre de province</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card-box">
+                <h4 class="header-title m-t-0 m-b-30">Agent</h4>
+                <div class="widget-chart-1">
+
+                    <div class="widget-detail-1">
+                        <h2 class="p-t-10 m-b-0" id="nbre-agent"></h2>
+                        <p class="text-muted">Nombre agents</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card-box">
+                <h4 class="header-title m-t-0 m-b-30">Statistique Province par Année </h4>
+                <div class="classpaiementAnnee">
+                    {{>StatsProvinceAnnees}}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card-box">
+                <h4 class="header-title m-t-0 m-b-30">Statistique Province par Date </h4>
+                <div class="classpaiementDate">
+                    {{>StatsProvinceDate}}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

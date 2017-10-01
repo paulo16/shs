@@ -1,0 +1,65 @@
+<template name="compoAddClient">
+    <form id="add-client" class="form-horizontal">
+
+        <div class="form-group">
+            <label for="input-placeholder" class="col-sm-2 control-label">Nom</label>
+            <div class="col-sm-10">
+                <input type="text" name="nom" class="form-control required" id="nom" placeholder="Nom">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input-placeholder" class="col-sm-2 control-label">Prénom</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="prenom" id="prenom" placeholder="Prénom">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="cin" class="col-sm-2 control-label">Cin</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control required" name="cin" id="cin" placeholder="E04587H">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="province" class="col-sm-2 control-label">Province</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="province" id="province" placeholder="ex:KHENIFRA">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="commune" class="col-sm-2 control-label">Commune</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="commune" id="commune" placeholder="ex:SEBT AIT RAHOU">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="village" class="col-sm-2 control-label">Village</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="village" id="village" placeholder="CHAABAT EL BIR">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ref_contrat" class="col-sm-2 control-label">No Contrat</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control required" name="ref_contrat" id="ref_contrat" placeholder="ex:KHN-BOB-147">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for=" date_mise_service" class="col-sm-2 control-label">Date Service</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input name="date_mise_service" value="{{datenow}}" id="date_mise_service" class="form-control required datetimepicker" type="text"
+                    />
+                    <span class="input-group-addon bg-primary b-0 text-white"><i class="ti-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-info">valider</button>
+    </form>
+
+</template>

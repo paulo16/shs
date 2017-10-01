@@ -1,0 +1,59 @@
+<template name="TmplModalUpdatePaiement">
+
+	<div id="updateModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Mise à jour Paiement</h4>
+				</div>
+				<div class="modal-body">
+					<form id="form-updatepaye">
+						<input id="_id" value="{{paiement._id}}" type="hidden" />
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="field-1" class="control-label">Client CIN</label>
+									<input type="text" disabled class="form-control" id="cin" value="{{paiement.client.cin}}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="agent" class="control-label">Agent</label>
+									<input type="text" disabled class="form-control" id="agent" value="{{paiement.agent.lastName}}">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="montant" class="control-label">Montant</label>
+									<input type="number" class="form-control" name="montant" id="montant" value="{{paiement.montant}}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="input-group">
+									<label for="date-paiement" class="control-label">Date Paiement</label>
+									<input name="date-paiement" id="date-paiement" value="{{ paiement.date_paiement_manuelle}}" class="form-control required datetimepicker"
+									 type="text" />
+									<span class="input-group-addon btn-primary  b-0 text-white"><i class="ti-calendar"></i></span>
+								</div>
+							</div>
+						</div>
+
+						<button type="submit" class="btn btn-primary">Mettre à jour </button>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+
+</template>

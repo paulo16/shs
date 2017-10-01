@@ -1,0 +1,90 @@
+<template name="TmplModalUpdateUser">
+
+	<div id="updateModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Mise à jour Utilisateur</h4>
+				</div>
+				<div class="modal-body">
+					<form id="form-updateuser">
+						<input id="_id" value="{{user._id}}" type="hidden" />
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="pseudo" class="control-label">Pseudo</label>
+									<input type="text" class="form-control" id="pseudo" value="{{user.username}}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="nom" class="control-label">Nom</label>
+									<input type="text" class="form-control" id="nom" value="{{user.profile.lastName}}">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="prenom" class="control-label">Prénom</label>
+									<input type="text" class="form-control" name="prenom" id="prenom" value="{{user.profile.firstName}}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="input-group">
+									<label for="email" class="control-label">Email</label>
+									<input name="email" id="email" value="{{user.emails.[0].address}}" class="form-control" type="text" />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="telephone" class="control-label">Télephone</label>
+									<input type="text" class="form-control" name="phone" id="telephone" value="{{user.profile.phone}}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="numero_agent" class="control-label">Numéro Agent</label>
+									<input type="text" class="form-control" name="numero_agent" id="numero_agent" value="{{user.profile.numero_agent}}">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="password" class="control-label">password</label>
+									<input type="password" class="form-control" name="password" id="password" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class=" control-label">Role</label>
+									<select name="role" class="form-control required">
+										            
+											<option>-- Role --</option>
+											<option {{equal user.roles.[0] "admin"}}  value="admin">admin</option>
+											<option {{equal user.roles.[0] "manager"}}  value="manager">manager</option>
+											<option {{equal user.roles.[0]  "agent"}} value="agent">agent</option>
+													
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<button type="submit" class="btn btn-primary">Mettre à jour </button>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+</template>

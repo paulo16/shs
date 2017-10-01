@@ -1,0 +1,29 @@
+<template name='StatsProvinceAnnees'>
+    <div class="select-province">
+        {{lesprovinces}}
+    </div>
+    <canvas id="stats-provinces-annees" class="chart" width="400" height="300"></canvas>
+</template>
+
+<template name='StatsProvinceDate'>
+    <form id='filtre_date'>
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="date-debut">
+                <span class="input-group-addon bg-primary b-0 text-white"><i class="ti-calendar"></i></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="mm/dd/yyyy" id="date-fin">
+                <span class="input-group-addon bg-primary b-0 text-white"><i class="ti-calendar"></i></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <button type="submit" class="btn btn-info waves-effect waves-light">lancer</button>
+            </div>
+        </div>
+    </form>
+    <canvas id="stats-provinces-date" class="chart" width="400" height="300"></canvas>
+</template>

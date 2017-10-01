@@ -1,0 +1,68 @@
+<template name="TmplModalUpdateClient">
+
+	<div id="updateModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Mise à jour Client</h4>
+				</div>
+				<div class="modal-body">
+					<form id="form-updateclient">
+						<input id="_id" value="{{client._id}}" type="hidden" />
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="field-1" class="control-label">CIN</label>
+									<input type="text" class="form-control" id="cin" value="{{client.cin}}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="ref_contrat" class="control-label">contrat</label>
+									<input type="text" class="form-control" id="ref_contrat" value="{{client.contrat.ref_contrat}}">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="nom" class="control-label">Nom</label>
+									<input type="text" class="form-control" name="nom" id="nom" value="{{client.nom}}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="prenom" class="control-label">prenom</label>
+									<input type="text" class="form-control" name="prenom" id="prenom" value="{{client.prenom}}">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group">
+									<label for="date-paiement" class="control-label">Date Mise en Service</label>
+									<input name="date-mise-service" id="date-mise-service" value="{{client.contrat.date_mise_service}}" class="form-control required datetimepicker"
+									 type="text" />
+									<span class="input-group-addon btn-primary  b-0 text-white"><i class="ti-calendar"></i></span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+						</div>
+						<br>
+
+						<button type="submit" class="btn btn-primary">Mettre à jour </button>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+
+</template>

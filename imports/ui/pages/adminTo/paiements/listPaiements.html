@@ -1,0 +1,41 @@
+<template name='listPaiements'>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-box">
+                <h4 class="panel-title">Les Paiements</h4>
+                <hr/> {{#if currentUser}} {{> TmplModalUpdatePaiement}}{{/if}}
+                <form id="form-search-paiement">
+                    <table cellpadding="3" class="display" cellspacing="1" border="0" style=" border-spacing: 10px; border-collapse: separate;">
+                        <thead>
+                            <tr>
+                                <th>Date M-Service</th>
+                                <th>CIN</th>
+                                <th>Province</th>
+                                <th>Date Début</th>
+                                <th>Date Fin</th>
+                                <th>Action</th>
+                                <th>&nbsp;&nbsp;&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="left"><input class="form-control" type="text" id="date-mise-service"></td>
+                                <td align="left"><input class="form-control" type="text" id="cin"></td>
+                                <td align="left">
+                                    <div class="select-province">{{provinces}}</div>
+                                </td>
+                                <td align="left"><input class="form-control" type="text" id="date-debut"></td>
+                                <td align="left"><input class="form-control" type="text" id="date-fin"></td>
+                                <td align="left"> <button type="submit" class="btn btn-info waves-effect waves-light">lancer</button></td>
+                                <td align="left"><button id="clear-search-paiement" class="btn btn-info waves-effect waves-light">vider recherche</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+                <hr>
+                <br> {{> tabular table=TabularTablesPaiements.Paiements selector=selector class="display table dataTablePaiement"}}
+            </div>
+        </div>
+    </div>
+
+</template>

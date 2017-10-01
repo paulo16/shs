@@ -1,0 +1,1 @@
+import "./appFooter.html";

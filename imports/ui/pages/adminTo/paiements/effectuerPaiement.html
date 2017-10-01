@@ -1,0 +1,143 @@
+<template name="effectuerPaiement">
+
+    <h4>Effectuer paiement</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-white">
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="input-rounded">CHERCHER CLIENT</label>
+                            <div class="col-sm-6">
+                                <input name="input-search" type="text" class="form-control input-rounded" id="input-search">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-white">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">Informations client</h4>
+                </div>
+                <div id='info-client' class="panel-body">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-white">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">Historique des Paiements</h4>
+                    <table id="table-historique" class="table">
+                        <thead>
+                            <tr>
+                                <th>Nom agent </th>
+                                <th>client </th>
+                                <th>Date Paiement</th>
+                                <th>Reçu</th>
+                                <th>Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id='historique-paie' class="panel-body">
+
+                </div>
+                <div id='les-montants'></div>
+                <br>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-white">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">Paiement</h4>
+                </div>
+                <div class="panel-body">
+                    <form id="form-paye">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <!--date paiement -->
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input id="date-paiement" name="date-paiement" value="{{datenow}}" class="form-control required datetimepicker" type="text"
+                                        />
+                                        <span class="input-group-addon bg-primary b-0 text-white"><i class="ti-calendar"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select class="form-control required" id="type-paie" name="type-paie">
+                                                
+                                                    <option value="Reçu electronique" >Reçu electronique</option>
+                                                    <option value="Reçu Manuel" >Reçu Manuel</option>
+                                                    <option value="Reçu de Remplacement SGEE" >Reçu de Remplacement SGEE</option>
+                                                    <option value="Virement Banquaire" >Virement Banquaire</option>
+                                                    <option value="Paiement Chèque" >Paiement Chèque</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select class="form-control" id="banque" name="banque">
+                                                    <option value="-" >-- Banque --</option>
+                                                    <option value="Poste" >Poste</option>
+                                                    <option value="Crédit Agricole" >Crédit Agricole</option>
+                                                    <option value="Banque Populaire" >Banque Populaire</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input id="montant" name="montant" type="number" class="col-sm-4 form-control required" placeholder="Montant ex:30">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <br>
+                                    <button type="submit " class="btn btn-info "> valider payement</button>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4" id="virement">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input name="mum-virement" type="text" class=" form-control" placeholder="Numéro de virement" id="mum-virement">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input name="expediteur" type="text" class="form-control" placeholder="Nom expediteur" id="expediteur">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="impression" class="col-md-12">
+            <div class="panel panel-white">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title">Imprimer votre recu</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-6">
+                        {{#unless genrecu}}
+
+                        <button type="button" class="btn btn-secondary print" id="print">Generer le reçu de paiement </button>                        {{else}}
+                        <p><i class="fa fa-spin fa-refresh"></i> Veillez Patienter svp ....... </p>
+                        {{/unless}}
+                    </div>
+                    <div class="col-md-6" id="lien-pdf">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
