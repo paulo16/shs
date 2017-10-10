@@ -36,6 +36,7 @@ Template.effectuerPaiement.events({
         //Historique des paiements 
         if ($('#input-search').val() != "") {
 
+
             Meteor.call('findClient', $('#input-search').val(), function (error, result) {
                 if (error) {
                     ////console.log(error);
@@ -44,6 +45,7 @@ Template.effectuerPaiement.events({
                     ////console.log(result);
                     let content = '<span> Aucun résulat trouvé</span>';
                     if (result && result != undefined && result != "") {
+                        Session.set('cin', result.cin);
                         infoClient = result;
                         content = '' +
                             '<div>' +
@@ -57,8 +59,7 @@ Template.effectuerPaiement.events({
                 }
             });
 
-
-            Meteor.call('findHistorique', $('#input-search').val(), function (error, result) {
+            Meteor.call('findHistorique', $('#input-search').val(), function (error, result1) {
                 if (error) {
                     console.log(error);
                 }
@@ -66,11 +67,13 @@ Template.effectuerPaiement.events({
                     //console.log(result);
                     //let content = '<span> Aucun résulat trouvé</span>';
                     let dataset = [];
-                    if (result && result != undefined && result != "") {
+                    Session.set('result1', result1);
+                    let res1 = Session.get('result1');
+                    if (res1 && res1 != undefined && res1 != "") {
 
                         let contenu;
                         let lien;
-                        result.forEach(function (element) {
+                        res1.forEach(function (element) {
                             if (element.recu_pdf) {
                                 lien = element.recu_pdf.replace(/.*pdfs\\/, "");
                             }
@@ -78,6 +81,7 @@ Template.effectuerPaiement.events({
                                 element.agent.lastName,
                                 element.client.cin,
                                 moment(element.date_paiement_auto).format("DD-MM-YYYY HH:mm"),
+                                //element.client.type_recu,
                                 lien,
                                 element.montant
 
@@ -90,7 +94,7 @@ Template.effectuerPaiement.events({
                     $("#table-historique").dataTable({
                         data: dataset,
                         destroy: true,
-                        pageLength: 5,
+                        pageLength: 3,
                         "oLanguage": {
                             "sProcessing": "Traitement en cours  ...",
                             "sSearch": "Rechercher&nbsp;:",
@@ -118,22 +122,25 @@ Template.effectuerPaiement.events({
                             { title: "client" },
                             { title: "Date Paiement" },
                             { title: "Reçu" },
+                            //{ title: "Type Reçu" },
                             { title: "Montant" },
                         ]
                     });
                 }
             });
 
-            Meteor.call('SumPaiementParClient', $('#input-search').val(), (error, result) => {
+            Meteor.call('SumPaiementParClient', $('#input-search').val(), (error, result2) => {
                 if (error) {
                     console.log(error);
                 } else {
-                    if (result.length > 0) {
+                    if (result2.length > 0) {
+                        Session.set('result2', result2);
+                        let res2 = Session.get('result2');
                         ////console.log(JSON.stringify(result));
                         let element = '<div style="height: 70px;line-height: 70px;text-align: center;border: 1px dashed #f69c55;">';
-                        let scp = monthDiff(result[0]._id.date_mise_service, new Date()) * 30;
-                        let msp = monthDiff(result[0]._id.date_mise_service, new Date());
-                        let sp = result[0].total ? result[0].total : 0;
+                        let scp = monthDiff(res2[0]._id.date_mise_service, new Date()) * 30;
+                        let msp = monthDiff(res2[0]._id.date_mise_service, new Date());
+                        let sp = res2[0].total ? res2[0].total : 0;
                         let mp = Math.floor(sp / 30);
                         let sa = Math.abs(scp - sp);
                         let mpa = Math.abs(Math.floor(sa / 30));
@@ -148,6 +155,7 @@ Template.effectuerPaiement.events({
 
             });
 
+
         } else {
             $('#historique-paie').html('');
             $('#info-client').html('');
@@ -159,7 +167,7 @@ Template.effectuerPaiement.events({
         $("#virement").append('');
         let valeur = event.target.value;
         ////console.log('la valeur ' + valeur);
-        if (valeur == "VB") {
+        if (valeur == "Virement Banquaire" || valeur == "Paiement Chèque") {
             $("#virement").show();
         } else {
             $("#virement").hide();
@@ -179,10 +187,10 @@ Template.effectuerPaiement.events({
             let t = $('#date-paiement').val().split(/[- :]/);
             let date_paie = new Date(t[2], t[1] - 1, t[0], t[3], t[4], t[5]);
 
-            if ($('#virement').val() == "Virement Banquaire" || $('#virement').val() == "Reçu de Remplacement SGEE") {
+            if ($('#type-paie').val() == "Virement Banquaire" || $('#type-paie').val() == "Paiement Chèque") {
                 virement = {
                     numero_virement: $('#mum-virement').val(),
-                    banque: $('#expediteur').val()
+                    banque: $('#banque').val()
                 }
 
             }
@@ -206,6 +214,7 @@ Template.effectuerPaiement.events({
                 client: client,
                 montant: montant,
                 recu_pdf: moment(new Date()).format("DD-MM-YYYY-HH-mm-ss") + '-pdf-absent',
+                emeteur_paiement_cin: $("#expediteur").val() ? $("#expediteur").val() : '',
                 virement: virement,
                 date_paiement_auto: new Date(),
                 date_paiement_manuelle: date_paie,

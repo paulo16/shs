@@ -15,3 +15,10 @@ Meteor.publish('paiementById', function (id) {
 
 });
 
+Meteor.publish('paiementByCin', function (cin) {
+
+  return Paiements.find({ 'client.cin': cin });
+
+});
+
+
