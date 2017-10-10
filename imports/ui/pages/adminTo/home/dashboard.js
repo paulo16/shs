@@ -82,6 +82,21 @@ Template.dashboard.onRendered(function () {
         });
     }
 
+    Meteor.call('findPaiementByDay', (error, result) => {
+        if (error) {
+            console.log(error);
+        } else if (result) {
+            //console.log(result);
+            $('#client-jour-total').append(result.length);
+            let som = 0;
+            result.forEach(function (element) {
+                som += element.total;
+            });
+            $('#montant-jour-total').append(som);
+
+        }
+    });
+
 
 
 

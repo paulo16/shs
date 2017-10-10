@@ -15,6 +15,7 @@ let infoClient;
 Template.effectuerPaiement.onCreated(() => {
     Template.instance().genrecu = new ReactiveVar(false);
     Session.set('idpaiement', '');
+    Session.set('showhistorique', 'false');
 });
 
 Template.effectuerPaiement.helpers({
@@ -69,6 +70,17 @@ Template.effectuerPaiement.events({
 
     'click #refresh': function (event, template) {
         showhistorique();
+    },
+    'click #cacher': function (event, template) {
+        showhistorique();
+        if (Session.get('showhistorique') == false) {
+            $('#show-historique').show();
+            Session.set('showhistorique', true);
+
+        } else {
+            $('#show-historique').hide();
+            Session.set('showhistorique', false);
+        }
     },
 
     'change #type-paie': function (event, template) {
@@ -188,6 +200,8 @@ Template.effectuerPaiement.events({
 
 
 Template.effectuerPaiement.onRendered(function () {
+    $('#show-historique').hide();
+
     $("#form-paye").validate({
         rules: {
             "date-paiement": {

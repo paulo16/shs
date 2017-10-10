@@ -4,7 +4,7 @@
             <div class="card-box">
                 <h4 class="header-title m-t-0 m-b-30">Clients par Province</h4>
 
-                <canvas id="clients-province" class="chart" width="400" height="400"></canvas>
+                <canvas id="clients-province" class="chart" width="400" height="200"></canvas>
             </div>
         </div>
         {{#if isInRole 'admin'}}
@@ -12,7 +12,32 @@
             <div class="card-box">
                 <h4 class="header-title m-t-0 m-b-30">Paiements par Province</h4>
 
-                <canvas id="montants-province" class="chart" width="400" height="400"></canvas>
+                <canvas id="montants-province" class="chart" width="400" height="200"></canvas>
+            </div>
+        </div>
+        {{/if}} {{#if isInRole 'manager,agent'}}
+        <div class="col-lg-6">
+            <div class="card-box">
+                <h4 class="header-title m-t-0 m-b-30">Clients/jour</h4>
+                <div class="widget-chart-1">
+
+                    <div class="widget-detail-1">
+                        <h2 class="p-t-10 m-b-0" id="client-jour-total"></h2>
+                        <span></span>
+                        <p class="text-muted">Nombre de clients traités aujourd'hui</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-box">
+                <h4 class="header-title m-t-0 m-b-30">Montant/jour</h4>
+                <div class="widget-chart-1">
+
+                    <div class="widget-detail-1">
+                        <h2 class="p-t-10 m-b-0" id="montant-jour-total"></h2>
+                        <span></span>
+                        <p class="text-muted">Montant journalier</p>
+                    </div>
+                </div>
             </div>
         </div>
         {{/if}}

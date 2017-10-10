@@ -542,7 +542,26 @@ Meteor.methods({
             fut.return(true);
         });
         return fut.wait();
-    }
+    },
+
+    findPaiementByDay: function () {
+        let paiements;
+        let today = new Date();
+        let datedebut = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);;
+        let datefin = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 0, 0);;
+
+        paiements = Paiements.aggregate([
+            { $match: { date_paiement_manuelle: { $gt: datedebut, $lt: datefin } } },
+            {
+                $group: {
+                    _id: "$client.ref_contrat",
+                    total: { $sum: "$montant" }
+                }
+            }
+        ]);
+
+        return paiements;
+    },
 
 
 });
