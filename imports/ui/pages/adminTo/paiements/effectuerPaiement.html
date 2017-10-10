@@ -30,6 +30,10 @@
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title">Historique des Paiements</h4>
+                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#show-historique">Afficher ou caher</button>
+                    <button type="button" id="refresh" class="btn btn-default">rafraichir</button>
+                </div>
+                <div id="show-historique">
                     <table id="table-historique" class="table">
                         <thead>
                             <tr>
@@ -43,12 +47,9 @@
                         <tbody>
                         </tbody>
                     </table>
+                    <div id='historique-paie' class="panel-body"></div>
+                    <div id='les-montants'></div>
                 </div>
-                <div id='historique-paie' class="panel-body">
-
-                </div>
-                <div id='les-montants'></div>
-                <br>
             </div>
         </div>
         <div class="col-md-12">
@@ -65,28 +66,30 @@
                                     <div class="input-group">
                                         <input id="date-paiement" name="date-paiement" value="{{datenow}}" class="form-control required datetimepicker" type="text"
                                         />
-                                        <span class="input-group-addon bg-primary b-0 text-white"><i class="ti-calendar"></i></span>
+                                        <span class="input-group-addon bg-primary b-0 text-white">
+                                            <i class="ti-calendar"></i>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <select class="form-control required" id="type-paie" name="type-paie">
-                                                
-                                                    <option value="Reçu electronique" >Reçu electronique</option>
-                                                    <option value="Reçu Manuel" >Reçu Manuel</option>
-                                                    <option value="Reçu de Remplacement SGEE" >Reçu de Remplacement SGEE</option>
-                                                    <option value="Virement Banquaire" >Virement Banquaire</option>
-                                                    <option value="Paiement Chèque" >Paiement Chèque</option>
+
+                                            <option value="Reçu electronique">Reçu electronique</option>
+                                            <option value="Reçu Manuel">Reçu Manuel</option>
+                                            <option value="Reçu de Remplacement SGEE">Reçu de Remplacement SGEE</option>
+                                            <option value="Virement Banquaire">Virement Banquaire</option>
+                                            <option value="Paiement Chèque">Paiement Chèque</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <select class="form-control" id="banque" name="banque">
-                                                    <option value="-" >-- Banque --</option>
-                                                    <option value="Poste" >Poste</option>
-                                                    <option value="Crédit Agricole" >Crédit Agricole</option>
-                                                    <option value="Banque Populaire" >Banque Populaire</option>
+                                            <option value="-">-- Banque --</option>
+                                            <option value="Poste">Poste</option>
+                                            <option value="Crédit Agricole">Crédit Agricole</option>
+                                            <option value="Banque Populaire">Banque Populaire</option>
 
                                         </select>
                                     </div>
@@ -129,8 +132,9 @@
                     <div class="col-md-6">
                         {{#unless genrecu}}
 
-                        <button type="button" class="btn btn-secondary print" id="print">Generer le reçu de paiement </button>                        {{else}}
-                        <p><i class="fa fa-spin fa-refresh"></i> Veillez Patienter svp ....... </p>
+                        <button type="button" class="btn btn-secondary print" id="print">Generer le reçu de paiement </button> {{else}}
+                        <p>
+                            <i class="fa fa-spin fa-refresh"></i> Veillez Patienter svp ....... </p>
                         {{/unless}}
                     </div>
                     <div class="col-md-6" id="lien-pdf">
