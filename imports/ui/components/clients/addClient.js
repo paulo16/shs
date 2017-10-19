@@ -16,11 +16,14 @@ Template.compoAddClient.events({
         let village = $('#village').val();
         let ref_contrat = $('#ref_contrat').val();
         let date_mise_service = $('#date_mise_service').val();
+        let tabdatefin = date_mise_service.split("-");
+        let datefin = new Date(tabdatefin[2], tabdatefin[1] - 1, tabdatefin[0]);
+
         let client;
         let contrat;
         contrat = {
             ref_contrat: ref_contrat,
-            date_mise_service: date_mise_service
+            date_mise_service: datefin
         };
 
         client = {

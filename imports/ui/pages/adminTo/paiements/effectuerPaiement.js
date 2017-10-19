@@ -1,6 +1,10 @@
-import { Meteor } from 'meteor/meteor';
+import {
+    Meteor
+} from 'meteor/meteor';
 import moment from 'moment';
-import { Template } from 'meteor/templating';
+import {
+    Template
+} from 'meteor/templating';
 //import { Pdfs } from '/imports/api/pdfs/pdfs.js';
 import pdf from 'html-pdf';
 import 'meteor/themeteorchef:jquery-validation';
@@ -41,8 +45,7 @@ Template.effectuerPaiement.events({
             Meteor.call('findClient', $('#input-search').val(), function (error, result) {
                 if (error) {
                     ////console.log(error);
-                }
-                else {
+                } else {
                     ////console.log(result);
                     let content = '<span> Aucun résulat trouvé</span>';
                     if (result && result != undefined && result != "") {
@@ -104,7 +107,9 @@ Template.effectuerPaiement.events({
             let virement;
             let agent;
             let client;
-            let user = Meteor.users.findOne({ _id: Meteor.userId() });
+            let user = Meteor.users.findOne({
+                _id: Meteor.userId()
+            });
             let t = $('#date-paiement').val().split(/[- :]/);
             let date_paie = new Date(t[2], t[1] - 1, t[0], t[3], t[4], t[5]);
 
@@ -159,8 +164,7 @@ Template.effectuerPaiement.events({
                     if (error) {
                         //console.log(error);
                         swal("Oups", " Problème ,validation non éffectué", "error");
-                    }
-                    else {
+                    } else {
                         //console.log(result);
                         Session.set('idpaiement', result);
                         swal("OK!", "Paiement bien validé.", "success");
@@ -188,7 +192,9 @@ Template.effectuerPaiement.events({
                 template.genrecu.set(false);
                 let url = '/cfs/files/' + res.collectionName + '/' + res._id + '/' + res.original.name;
                 //console.log("la reponse serveur:" + JSON.stringify(res._id) + 'mon url' + url);
-                Meteor.setTimeout(function () { window.open(url, '_blank'); }, 1000);
+                Meteor.setTimeout(function () {
+                    window.open(url, '_blank');
+                }, 1000);
             } else {
                 template.genrecu.set(false);
                 swal("Oups...", "Pétit problème ,Impossible de génerer pdf !", "error");
@@ -253,8 +259,7 @@ function showhistorique() {
     Meteor.call('findHistorique', $('#input-search').val(), function (error, result1) {
         if (error) {
             console.log(error);
-        }
-        else {
+        } else {
             //console.log(result);
             //let content = '<span> Aucun résulat trouvé</span>';
             let dataset = [];
@@ -265,15 +270,20 @@ function showhistorique() {
                 let contenu;
                 let lien;
                 res1.forEach(function (element) {
+
                     if (element.recu_pdf) {
                         lien = element.recu_pdf.replace(/.*pdfs\\/, "");
+                    }
+                    if (typeof element.type_paiement === undefined) {
+                        element.type_paiement = "";
+
                     }
                     contenu = [
                         element.agent.lastName,
                         element.client.cin,
                         moment(element.date_paiement_auto).format("DD-MM-YYYY HH:mm"),
-                        //element.client.type_recu,
                         lien,
+                        //element.type_paiement,
                         element.montant
 
                     ];
@@ -309,13 +319,21 @@ function showhistorique() {
                         "sSortDescending": "activer pour trier la colonne par ordre d&eacute;croissant"
                     }
                 },
-                columns: [
-                    { title: "Nom agent" },
-                    { title: "client" },
-                    { title: "Date Paiement" },
-                    { title: "Reçu" },
-                    //{ title: "Type Reçu" },
-                    { title: "Montant" },
+                columns: [{
+                        title: "Nom agent"
+                    },
+                    {
+                        title: "client"
+                    },
+                    {
+                        title: "Date Paiement"
+                    },
+                    {
+                        title: "Reçu"
+                    },
+                    {
+                        title: "Montant"
+                    },
                 ]
             });
         }
@@ -348,4 +366,3 @@ function showhistorique() {
     });
 
 }
-
