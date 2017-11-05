@@ -1,7 +1,16 @@
-import { Meteor } from 'meteor/meteor';
-import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
-import { FlowRouterMeta, FlowRouterTitle } from 'meteor/ostrio:flow-router-meta';
-import { BlazeLayout } from 'meteor/kadira:blaze-layout';
+import {
+    Meteor
+} from 'meteor/meteor';
+import {
+    FlowRouter
+} from 'meteor/ostrio:flow-router-extra';
+import {
+    FlowRouterMeta,
+    FlowRouterTitle
+} from 'meteor/ostrio:flow-router-meta';
+import {
+    BlazeLayout
+} from 'meteor/kadira:blaze-layout';
 import '../../ui/layouts/adminTo/appLayout.js';
 import '../../ui/pages/adminTo/home/dashboard.js';
 import '../../ui/pages/adminTo/not-found/not-found.js';
@@ -29,7 +38,9 @@ Accounts.onLogin(function (user) {
 
 
 
-let publicRoutes = FlowRouter.group({ name: 'public' });
+let publicRoutes = FlowRouter.group({
+    name: 'public'
+});
 
 
 publicRoutes.route('/login', {
@@ -78,14 +89,18 @@ let authenticatedRoutes = FlowRouter.group({
 authenticatedRoutes.route('/', {
     name: 'dashboard',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "dashboard" });
+        BlazeLayout.render("appLayout", {
+            yield: "dashboard"
+        });
     },
 });
 
 authenticatedRoutes.route('/paiements', {
     name: 'lesPaiements',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "listPaiements" });
+        BlazeLayout.render("appLayout", {
+            yield: "listPaiements"
+        });
     }
 });
 
@@ -93,49 +108,63 @@ authenticatedRoutes.route('/paiements', {
 authenticatedRoutes.route('/etats-paiements-clients', {
     name: 'etatsPaiements',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "etatsPaiements" });
+        BlazeLayout.render("appLayout", {
+            yield: "etatsPaiements"
+        });
     }
 });
 
 authenticatedRoutes.route('/effectuer-paiement', {
     name: 'effectuerPaiement',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "effectuerPaiement" });
+        BlazeLayout.render("appLayout", {
+            yield: "effectuerPaiement"
+        });
     },
 });
 
 authenticatedRoutes.route('/uploader-paiements', {
     name: 'uploaderPaiements',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "uploaderPaiements" });
+        BlazeLayout.render("appLayout", {
+            yield: "uploaderPaiements"
+        });
     },
 });
 
 authenticatedRoutes.route('/add-user', {
     name: 'addUser',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "addUser" });
+        BlazeLayout.render("appLayout", {
+            yield: "addUser"
+        });
     },
 });
 
 authenticatedRoutes.route('/users', {
     name: 'listUsers',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "listUsers" });
+        BlazeLayout.render("appLayout", {
+            yield: "listUsers"
+        });
     },
 });
 
 authenticatedRoutes.route('/uploader-clients', {
     name: 'uploaderClients',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "uploaderClients" });
+        BlazeLayout.render("appLayout", {
+            yield: "uploaderClients"
+        });
     },
 });
 
 authenticatedRoutes.route('/clients', {
     name: 'listClients',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "listClients" });
+        BlazeLayout.render("appLayout", {
+            yield: "listClients"
+        });
     },
 
 });
@@ -143,21 +172,27 @@ authenticatedRoutes.route('/clients', {
 authenticatedRoutes.route('/add-client', {
     name: 'AddClient',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "AddClient" });
+        BlazeLayout.render("appLayout", {
+            yield: "AddClient"
+        });
     },
 });
 
 authenticatedRoutes.route('/profile-client', {
     name: 'profile',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "profileClient" });
+        BlazeLayout.render("appLayout", {
+            yield: "profileClient"
+        });
     },
 });
 
 authenticatedRoutes.route('/stats-province-annee', {
     name: 'PageStatsProvinceAnnees',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "PageStatsProvinceAnnees" });
+        BlazeLayout.render("appLayout", {
+            yield: "PageStatsProvinceAnnees"
+        });
     },
 });
 
@@ -165,7 +200,22 @@ authenticatedRoutes.route('/stats-province-annee', {
 authenticatedRoutes.route('/synchronisation', {
     name: 'synchronisation',
     action: function () {
-        BlazeLayout.render("appLayout", { yield: "synchro" });
+        BlazeLayout.render("appLayout", {
+            yield: "synchro"
+        });
+    },
+});
+
+authenticatedRoutes.route('/save-paiement-agent', {
+    name: 'paiementagent',
+    action: function () {
+        Meteor.call('paiementsTranscation', data, (result, error) => {
+            if (result == true) {
+                return true;
+            } else if (error) {
+                console.log(error);
+            }
+        })
     },
 });
 
