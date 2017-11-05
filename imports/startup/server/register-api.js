@@ -9,5 +9,8 @@ import '/imports/api/users/server/publications.js';
 import '/imports/api/paiements/methods.js';
 import '/imports/api/paiements/server/publications.js';
 
+import '/imports/api/histosync/methods.js';
+import '/imports/api/histosync/server/publications.js';
+
 import '/imports/api/pdfs/methods.js';
 import '/imports/api/pdfs/server/publications.js';

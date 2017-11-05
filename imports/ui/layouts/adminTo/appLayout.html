@@ -1,20 +1,18 @@
 <template name="appLayout">
     <!-- Navigation Bar-->
-      {{> appHeader}}
+    {{> appHeader}}
     <!-- End Navigation Bar-->
     <div class="wrapper">
         <div class="container">
 
             <!-- Page-Title -->
             <div class="row">
-                <div class="col-sm-12">
-                    {{> Template.dynamic template=yield}}
-                </div>
+                {{> Template.dynamic template=yield}}
             </div>
 
 
             <!-- Footer -->
-             {{> appFooter}}
+            {{> appFooter}}
             <!-- End Footer -->
 
         </div>

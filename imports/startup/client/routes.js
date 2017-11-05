@@ -10,6 +10,7 @@ import '../../ui/pages/adminTo/uploads/clients.js';
 import '../../ui/pages/adminTo/uploads/paiements.js';
 import '../../ui/pages/adminTo/clients/listClients.js';
 import '../../ui/pages/adminTo/clients/addClient.js';
+import '../../ui/pages/adminTo/clients/profileClient.js';
 import '../../ui/pages/adminTo/synchro/synchro.js';
 import '../../ui/pages/adminTo/paiements/effectuerPaiement.js';
 import '../../ui/pages/adminTo/statistiques/StatsProvinceAnnees.js';
@@ -143,6 +144,13 @@ authenticatedRoutes.route('/add-client', {
     name: 'AddClient',
     action: function () {
         BlazeLayout.render("appLayout", { yield: "AddClient" });
+    },
+});
+
+authenticatedRoutes.route('/profile-client', {
+    name: 'profile',
+    action: function () {
+        BlazeLayout.render("appLayout", { yield: "profileClient" });
     },
 });
 

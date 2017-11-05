@@ -63,3 +63,5 @@ mrmasly:meteor-root
 themeteorchef:jquery-validation
 cfs:standard-packages
 cfs:filesystem
+http
+babrahams:transactions
