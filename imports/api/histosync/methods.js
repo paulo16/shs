@@ -135,7 +135,7 @@ Meteor.methods({
 
         let paiements = Paiements.find({
             date_paiement_manuelle: {
-                $gt: dateLastSynchro
+                $gt: datesynchro
             }
         });
 
