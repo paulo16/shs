@@ -209,6 +209,10 @@ authenticatedRoutes.route('/synchronisation', {
 authenticatedRoutes.route('/save-paiement-agent', {
     name: 'paiementagent',
     action: function () {
+        let currentUrl = FlowRouter.current();
+        let data = currentUrl.queryParams;
+        console.log(data);
+
         Meteor.call('paiementsTranscation', data, (result, error) => {
             if (result == true) {
                 return true;
