@@ -33,7 +33,7 @@ Meteor.methods({
         //console.log(maxdate);
         return maxdate;
     },
-    insertDatetLastSynchroPaiements: function () {
+    insertDateLastSynchroPaiements: function () {
         let Future = Npm.require('fibers/future');
         let fut = new Future();
 
@@ -108,13 +108,13 @@ Meteor.methods({
 
         return fut.wait();
     },
-    paiementsTranscation: function (dataStrings) {
+    paiementsTransaction: function (dataStrings) {
         let txid;
         let paiementsEnvoyes = JSON.parse(dataStrings);
         console.log('donnees recu ' + paiementsEnvoyes.length);
 
         try {
-            txid = tx.start("Insert into Paiements Agent");
+            txid = tx.start("Insert into Paiements Serveur");
 
             paiementsEnvoyes.forEach(function (element) {
                 delete element._id;
@@ -190,7 +190,7 @@ Meteor.methods({
                     tx: true
                 })
             });
-            let result = remoteConnection.call('paiementsTranscation', JSON.stringify(paiementsAgent));
+            let result = remoteConnection.call('paiementsTransaction', JSON.stringify(paiementsAgent));
             if (result) {
 
                 let object = {
@@ -217,7 +217,7 @@ Meteor.methods({
 
         let paiements = Paiements.find({
             date_paiement_manuelle: {
-                $gt: datesynchro
+                $gte: datesynchro
             },
             'agent.numero_agent': {
                 $ne: numero_agent
