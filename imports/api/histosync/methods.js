@@ -33,7 +33,7 @@ Meteor.methods({
         //console.log(maxdate);
         return maxdate;
     },
-    inserDatetLastSynchroPaiements: function () {
+    insertDatetLastSynchroPaiements: function () {
         let Future = Npm.require('fibers/future');
         let fut = new Future();
 
@@ -178,7 +178,7 @@ Meteor.methods({
                     $gt: datesynchro[0].maxdate
                 }
             }).fetch();
-            
+
             let numero = Meteor.user() ? Meteor.user().profile.numero_agent : '199';
             let paiementsServer = remoteConnection.call('getPaiementsServerLastSynchro', datesynchro[0].maxdate, numero);
 
