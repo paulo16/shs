@@ -109,6 +109,7 @@ Meteor.methods({
     paiementsTranscation: function (dataStrings) {
         let txid;
         let paiementsEnvoyes = JSON.parse(dataStrings);
+        console.log('donnees recu ' + paiementsEnvoyes);
 
         try {
             txid = tx.start("Insert into Paiements Agent");
@@ -137,18 +138,18 @@ Meteor.methods({
             date_paiement_manuelle: {
                 $gt: datesynchro
             }
-        });
+        }).fetch();
 
         try {
 
-            const result = HTTP.call('GET', config.url_serveur + "/save-paiement-agent", {
-                data: {
-                    data: JSON.stringify(paiements)
-                }
-            });
-            return true;
+            let config = JSON.parse(Assets.getText('config-server.json'));
+            let remoteConnection = DDP.connect(config.url_serveur);
+            console.log('Url: ' + config.url_serveur);
+            let result = remoteConnection.call('paiementsTranscation', JSON.stringify(paiements));
+            return result;
         } catch (e) {
             // Got a network error, timeout, or HTTP error in the 400 or 500 range.
+            console.log(e);
             return false;
         }
         return paiements;
