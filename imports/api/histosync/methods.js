@@ -99,7 +99,7 @@ Meteor.methods({
                 while (nontrouver);
 
 
-                fut.return("Synchronisation finie !");
+                fut.return("date synchro definie !");
 
             });
         }
@@ -109,7 +109,7 @@ Meteor.methods({
     paiementsTranscation: function (dataStrings) {
         let txid;
         let paiementsEnvoyes = JSON.parse(dataStrings);
-        console.log('donnees recu ' + paiementsEnvoyes);
+        console.log('donnees recu ' + paiementsEnvoyes.length);
 
         try {
             txid = tx.start("Insert into Paiements Agent");
@@ -131,14 +131,16 @@ Meteor.methods({
     },
     insertAgentPaiementsServer: function () {
         this.unblock();
-        let datesynchro = Meteor.call('getlastSynchroTable').maxdate;
-        let config = JSON.parse(Assets.getText('config-server.json'));
+        let datesynchro = Meteor.call('getlastSynchroTable', 'paiements');
+        console.log('date sync : ' + datesynchro[0].maxdate);
 
         let paiements = Paiements.find({
             date_paiement_manuelle: {
-                $gt: datesynchro
+                $gt: datesynchro[0].maxdate
             }
         }).fetch();
+
+        console.log('paiements: ' + JSON.stringify(paiements));
 
         try {
 
@@ -155,5 +157,68 @@ Meteor.methods({
         return paiements;
 
     },
+
+    insertServerPaiementsToAgent: function () {
+        this.unblock();
+        let datedebut = new Date();
+        Meteor.call('insertLastSynchroPaiements');
+        let datesynchro = Meteor.call('getlastSynchroTable', 'paiements');
+        console.log('date sync : ' + datesynchro[0].maxdate);
+
+        try {
+
+            let config = JSON.parse(Assets.getText('config-server.json'));
+            let remoteConnection = DDP.connect(config.url_serveur);
+            console.log('Url: ' + config.url_serveur);
+            let paiementsAgent = Paiements.find({
+                date_paiement_manuelle: {
+                    $gt: datesynchro[0].maxdate
+                }
+            }).fetch();
+
+            let paiementsServer = remoteConnection.call('getPaiementsServerLastSynchro', datesynchro[0].maxdate);
+
+            txid = tx.start("Insert server Paiements to Agent");
+
+            paiementsServer.forEach(function (element) {
+                delete element._id;
+                Paiements.insert(element, {
+                    tx: true
+                })
+            });
+            let result = remoteConnection.call('paiementsTranscation', JSON.stringify(paiementsAgent));
+            if (result) {
+                let numero = Meteor.user() ? Meteor.user().profile.numero_agent : '199';
+                let object = {
+                    date_debut_synchro: datedebut,
+                    nom_collection: 'paiements',
+                    numero_agent: numero
+                };
+                HistoSync.insert(object);
+                tx.commit();
+                return true;
+
+            }
+            tx.undo(txid);
+            return false;
+        } catch (e) {
+            // Got a network error, timeout, or HTTP error in the 400 or 500 range.
+            console.log(e);
+            return false;
+        }
+
+    },
+
+    getPaiementsServerLastSynchro: function (datesynchro) {
+
+        let paiements = Paiements.find({
+            date_paiement_manuelle: {
+                $gt: datesynchro
+            }
+        }).fetch();
+
+        return paiements;
+
+    }
 
 });
