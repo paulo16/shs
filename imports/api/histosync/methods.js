@@ -174,7 +174,7 @@ Meteor.methods({
             let remoteConnection = DDP.connect(config.url_serveur);
             console.log('Url: ' + config.url_serveur);
             let paiementsAgent = Paiements.find({
-                date_paiement_manuelle: {
+                date_paiement_auto: {
                     $gt: datesynchro[0].maxdate
                 }
             }).fetch();
@@ -216,7 +216,7 @@ Meteor.methods({
     getPaiementsServerLastSynchro: function (datesynchro, numero_agent) {
 
         let paiements = Paiements.find({
-            date_paiement_manuelle: {
+            date_paiement_auto: {
                 $gte: datesynchro
             },
             'agent.numero_agent': {
