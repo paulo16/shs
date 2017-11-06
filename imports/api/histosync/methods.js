@@ -33,7 +33,7 @@ Meteor.methods({
         //console.log(maxdate);
         return maxdate;
     },
-    insertLastSynchroPaiements: function () {
+    inserDatetLastSynchroPaiements: function () {
         let Future = Npm.require('fibers/future');
         let fut = new Future();
 
@@ -99,9 +99,11 @@ Meteor.methods({
                 while (nontrouver);
 
 
-                fut.return("date synchro definie !");
+                fut.return(true);
 
             });
+        } else {
+            return true;
         }
 
         return fut.wait();
@@ -140,7 +142,7 @@ Meteor.methods({
             }
         }).fetch();
 
-        console.log('paiements: ' + JSON.stringify(paiements));
+        //console.log('paiements: ' + JSON.stringify(paiements));
 
         try {
 
@@ -161,7 +163,8 @@ Meteor.methods({
     insertServerPaiementsToAgent: function () {
         this.unblock();
         let datedebut = new Date();
-        Meteor.call('insertLastSynchroPaiements');
+        let dateinit = Meteor.call('insertDateLastSynchroPaiements');
+        console.log('date init ' + dateinit);
         let datesynchro = Meteor.call('getlastSynchroTable', 'paiements');
         console.log('date sync : ' + datesynchro[0].maxdate);
 
@@ -175,8 +178,9 @@ Meteor.methods({
                     $gt: datesynchro[0].maxdate
                 }
             }).fetch();
-
-            let paiementsServer = remoteConnection.call('getPaiementsServerLastSynchro', datesynchro[0].maxdate);
+            
+            let numero = Meteor.user() ? Meteor.user().profile.numero_agent : '199';
+            let paiementsServer = remoteConnection.call('getPaiementsServerLastSynchro', datesynchro[0].maxdate, numero);
 
             txid = tx.start("Insert server Paiements to Agent");
 
@@ -188,7 +192,7 @@ Meteor.methods({
             });
             let result = remoteConnection.call('paiementsTranscation', JSON.stringify(paiementsAgent));
             if (result) {
-                let numero = Meteor.user() ? Meteor.user().profile.numero_agent : '199';
+
                 let object = {
                     date_debut_synchro: datedebut,
                     nom_collection: 'paiements',
@@ -209,12 +213,16 @@ Meteor.methods({
 
     },
 
-    getPaiementsServerLastSynchro: function (datesynchro) {
+    getPaiementsServerLastSynchro: function (datesynchro, numero_agent) {
 
         let paiements = Paiements.find({
             date_paiement_manuelle: {
                 $gt: datesynchro
+            },
+            'agent.numero_agent': {
+                $ne: numero_agent
             }
+
         }).fetch();
 
         return paiements;
