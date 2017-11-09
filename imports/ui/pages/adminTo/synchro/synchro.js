@@ -1,4 +1,7 @@
-import { Meteor } from 'meteor/meteor';
+import {
+    Meteor
+} from 'meteor/meteor';
+import 'meteor/kevohagan:sweetalert';
 import './synchro.html';
 
 Template.synchro.onCreated(() => {
@@ -20,7 +23,7 @@ Template.synchro.helpers({
 });
 
 Template.synchro.events({
-    'click #synchroclients'(event, template) {
+    'click #synchroclients' (event, template) {
         template.synchroclients.set(true);
 
         Meteor.call('synchroClients', (error, response) => {
@@ -36,23 +39,47 @@ Template.synchro.events({
         });
     },
 
-    'click #synchropaiements'(event, template) {
+    'click #synchropaiements' (event, template) {
         template.synchropaiements.set(true);
 
-        Meteor.call('synchroPaiements', (error, response) => {
-            console.log(" Fin de synchro des Paiements");
+        Meteor.call('insertServerPaiementsToAgent', (error, response) => {
             if (error) {
+                console.log(" Fin de synchro des Paiements");
                 console.log(error);
                 template.synchropaiements.set(false);
+                swal(
+                    'Oops...',
+                    'Problème lors de la synchronisation ,verifiez votre connection !',
+                    'error'
+                )
             } else if (response) {
-                console.log(response);
-                template.synchropaiements.set(false);
-                Bert.alert('Synchronisation Paiements complete!', 'success', 'growl-top-right');
+                if (response == false) {
+                    template.synchropaiements.set(false);
+                    swal(
+                        'Oops...',
+                        'Problème lors de la synchronisation ,verifiez votre connection !',
+                        'error'
+                    )
+                } else {
+                    console.log(response);
+
+                    template.synchropaiements.set(false);
+                    swal({
+                        position: 'top-right',
+                        type: 'success',
+                        title: 'Synchronisation complete',
+                        text: 'Paiemesnts envoyes :' + response.envoyes + ' Recus :' + response.recus,
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    //Bert.alert('Synchronisation Paiements complete!', 'success', 'growl-top-right');
+
+                }
             }
         });
     },
 
-    'click #synchrousers'(event, template) {
+    'click #synchrousers' (event, template) {
         template.synchrousers.set(true);
 
         Meteor.call('synchroUsers', (error, response) => {

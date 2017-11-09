@@ -10,6 +10,9 @@ let HistoSyncSchema = new SimpleSchema({
     nom_collection: {
         type: String,
     },
+    recu_pdf: {
+        type: String,
+    },
     numero_agent: {
         type: String,
     },

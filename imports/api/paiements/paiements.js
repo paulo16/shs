@@ -77,6 +77,7 @@ let paiementsSchema = new SimpleSchema({
 
     date_paiement_auto: {
         type: Date,
+        optional: true
 
     },
     date_paiement_manuelle: {

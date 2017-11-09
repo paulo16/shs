@@ -1,4 +1,7 @@
-import { Meteor } from 'meteor/meteor';
+import {
+  Meteor
+} from 'meteor/meteor';
+import 'meteor/kevohagan:sweetalert';
 import './uploadPaiements.html';
 
 Template.uploadPaiements.onCreated(() => {
@@ -12,7 +15,7 @@ Template.uploadPaiements.helpers({
 });
 
 Template.uploadPaiements.events({
-  'change [name="uploadCSV"]'(event, template) {
+  'change [name="uploadCSV"]' (event, template) {
     template.uploading.set(true);
 
     Papa.parse(event.target.files[0], {
@@ -23,10 +26,28 @@ Template.uploadPaiements.events({
           if (error) {
             console.log(error);
             template.uploading.set(false);
+            Meteor.call('removePaiements', (error1, result) => {
+              if (result) {
+                swal(
+                  'Oops...',
+                  'Problème au niveau des données, verifiez vos données les dates particulièrement !',
+                  'error'
+                );
+              } else if (error1) {
+                console.log(error1);
+              }
+            });
           } else if (response) {
             console.log('parseUpload complete .');
             template.uploading.set(false);
-            Bert.alert('Upload complete!', 'success', 'growl-top-right');
+            swal({
+              position: 'top-right',
+              type: 'success',
+              title: 'Importation complete',
+              text: 'Paiemesnts Totaux :' + response,
+              showConfirmButton: false,
+              timer: 3000
+            })
           }
         });
       }

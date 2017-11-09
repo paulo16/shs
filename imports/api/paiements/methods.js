@@ -33,57 +33,78 @@ Paiements.allow({
 Meteor.methods({
 
     parseUploadPaiements: function (data) {
-
         // Insertion des clients
         for (let i = 0; i < data.length; i++) {
-
+            let dateRegExp = /^([0-2][0-9]{3})\-(0[1-9]|1[0-2])\-([0-2][0-9]|3[0-1])(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
+            //var dateRegExp = /^([0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}){1}(\s[0-9]{0,2}:[0-9]{0,2}){0,1}$/;
             let item = data[i];
-            exists = Paiements.findOne({
-                date_paiement_auto: item.dtupdate,
-                recu_pdf: item.filename
-            });
-
-            if (!exists && item.total != '' && item.total != undefined) {
-
-                let dtService;
-                if (item.dtservice != 'NULL' && item.dtservice != "" && item.dtservice != undefined) {
-                    dtServiceIter = (item.dtservice).split("-");
-                    dtService = new Date(dtServiceIter[0], dtServiceIter[1] - 1, dtServiceIter[2]);
+            if (item) {
+                /*
+                let date_paiement_manuelle;
+                if (item.dtSave != 'NULL' && item.dtSave != "" && item.dtSave != undefined) {
+                    let dtUpdateIter = (item.dtSave).split("-");
+                    date_paiement_manuelle = new Date(dtUpdateIter[0], dtUpdateIter[1] - 1, dtUpdateIter[2]);
                 } else {
-                    dtService = null;
+                    date_paiement_manuelle = date_paiement_auto ? date_paiement_auto : new Date('2001-01-01T00:00:00Z');
                 }
 
-                let agent = {
-                    numero_agent: item.agent,
-                    lastName: item.lastname
-                };
+                let date_paiement_auto;
+                if (item.dtupdate != 'NULL' && item.dtupdate != "" && item.dtupdate != undefined) {
+                    let dtUpdateIter = (item.dtupdate).split("-");
+                    date_paiement_auto = new Date(dtUpdateIter[0], dtUpdateIter[1] - 1, dtUpdateIter[2]);
+                } else {
+                    date_paiement_auto = date_paiement_manuelle ? date_paiement_manuelle : new Date('2001-01-01T00:00:00Z');
+                }
+                */
 
-                let client = {
-                    ref_contrat: item.ref_customer,
-                    nom: item.nom,
-                    cin: item.cin,
-                    province: item.province,
-                    commune: item.commune,
-                    village: item.village,
-                    date_mise_service: dtService,
-                };
-
-
-                let paiement = {
-                    agent: agent,
-                    client: client,
-                    montant: item.total,
-                    type_paiement: item.typerecu,
-                    recu_pdf: item.filename,
+                exists = Paiements.findOne({
                     date_paiement_auto: item.dtupdate,
-                    date_paiement_manuelle: item.dateSave,
+                    recu_pdf: item.filename
+                });
+
+                if (!exists && item.total != '' && item.total != undefined) {
+                    /*
+                     let dtService;
+                     if (item.dtservice != 'NULL' && item.dtservice != null && item.dtservice != "" && item.dtservice != undefined) {
+                         dtServiceIter = (item.dtservice).split("-");
+                         dtService = new Date(dtServiceIter[0], dtServiceIter[1] - 1, dtServiceIter[2]);
+                     } else {
+                         dtService = new Date('2001-01-01T00:00:00Z');
+                     }
+                     */
+
+                    let agent = {
+                        numero_agent: item.agent,
+                        lastName: item.lastname
+                    };
+
+                    let client = {
+                        ref_contrat: item.ref_customer,
+                        nom: item.nom,
+                        cin: item.cin,
+                        province: item.province,
+                        commune: item.commune,
+                        village: item.village,
+                        date_mise_service: dateRegExp.test(item.dtservice) ? item.dtservice : new Date('2001-01-01T00:00:00Z'),
+                    };
+
+
+                    let paiement = {
+                        agent: agent,
+                        client: client,
+                        montant: item.total,
+                        type_paiement: item.typerecu,
+                        recu_pdf: item.filename,
+                        date_paiement_auto: dateRegExp.test(item.dtupdate) ? item.dtupdate : dateRegExp.test(item.dtSave) ? item.dtSave : new Date('2001-01-01T00:00:00Z'),
+                        date_paiement_manuelle: dateRegExp.test(item.dtSave) ? item.dtSave : dateRegExp.test(item.dtupdate) ? item.dtupdate : new Date('2001-01-01T00:00:00Z'),
+                    }
+                    Paiements.insert(paiement);
                 }
-                Paiements.insert(paiement);
             }
         }
 
         console.warn('Insertion complete .');
-        return true;
+        return Paiements.find({}).count();
     },
 
     findHistorique: function (saisi) {
@@ -867,4 +888,8 @@ Meteor.methods({
         return maxdate;
     },
 
+    removePaiements: function () {
+        return Paiements.remove({});
+
+    }
 });
