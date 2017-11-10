@@ -23,25 +23,39 @@ Meteor.methods({
     parseUploadClient: function (data) {
 
         // Insertion des clients
-        for (let i = 0; i < data.length; i++) {
-            let dateRegExp = /^([0-2][0-9]{3})\-(0[1-9]|1[0-2])\-([0-2][0-9]|3[0-1])(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
-            let item = data[i];
-            if (item) {
-                exists = Clients.findOne({
-                    'contrat.ref_contrat': item.ref_customer
-                });
+        let dateRegExp1 = /^(\d{2})\/(\d{2})\/(\d{4})(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
+        let dateRegExp2 = /^([0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}){1}(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
 
-                let dtservice;
-                if (item.dtservice != 'NULL' && item.dtservice != "" && item.dtservice != undefined) {
-                    let dtserviceTable = (item.dtservice).split("-");
-                    dtservice = new Date(dtserviceTable[0], dtserviceTable[1] - 1, dtserviceTable[2]);
+        for (let i = 0; i < data.length; i++) {
+            let item = data[i];
+            /// item = item.replace("^\"|\"$", "");
+            //console.log('item ' + JSON.stringify(item));
+            //console.log('item  date mise service' + item.dtservice);
+            //console.log('item 2 nom' + item["nom"]);
+            exists = Clients.findOne({
+                nom: item.nom,
+                prenom: item.prenom,
+                cin: item.cin,
+                province: item.province,
+                'contrat.ref_contrat': item.ref_customer
+            });
+
+            if (!exists) {
+                let dtService;
+
+                if (dateRegExp1.test(item.dtservice)) {
+                    dtServiceIter = (item.dtservice).split("/");
+                    dtService = new Date(dtServiceIter[2], dtServiceIter[1] - 1, dtServiceIter[0]);
+                } else if (dateRegExp2.test(item.dtservice)) {
+                    dtServiceIter = (item.dtservice).split("-");
+                    dtService = new Date(dtServiceIter[0], dtServiceIter[1] - 1, dtServiceIter[2]);
                 } else {
-                    dtservice = dateRegExp.test(item.dtservice) ? item.dtservice : new Date('2001-01-01T00:00:00Z');
+                    dtService = new Date('2001-01-01T00:00:00Z');
                 }
 
                 let contrat = {
                     ref_contrat: item.ref_customer,
-                    date_mise_service: dtservice
+                    date_mise_service: dtService
                 };
 
                 let client = {
@@ -55,9 +69,9 @@ Meteor.methods({
                     gpsouest: item.gpsouest,
                     gpsnord: item.gpsnord,
                     contrat: contrat
-                }
-                Clients.insert(client);
+                };
 
+                Clients.insert(client);
             }
         }
 
@@ -252,5 +266,8 @@ Meteor.methods({
         //console.log(client);
         return client;
     },
+    removeClients: function () {
+        return Clients.remove({});
 
+    }
 });

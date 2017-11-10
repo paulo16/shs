@@ -73,6 +73,7 @@ let paiementsSchema = new SimpleSchema({
 
     recu_pdf: {
         type: String,
+        optional: true
     },
 
     date_paiement_auto: {

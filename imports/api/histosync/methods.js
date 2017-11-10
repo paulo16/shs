@@ -219,10 +219,17 @@ Meteor.methods({
                 });
                 let result = remoteConnection.call('paiementsTransaction', JSON.stringify(paiementsAgent));
                 if (result) {
+                    let p = Paiements.findOne({}, {
+                        limit: 1,
+                        sort: {
+                            date_paiement_auto: -1
+                        }
+                    });
 
                     let object = {
                         date_debut_synchro: datedebut,
                         nom_collection: 'paiements',
+                        recu_pdf: p.recu_pdf ? p.recu_pdf : 'aucun-pdf',
                         numero_agent: numero
                     };
                     HistoSync.insert(object);

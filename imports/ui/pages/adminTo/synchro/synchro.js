@@ -70,7 +70,6 @@ Template.synchro.events({
                         title: 'Synchronisation complete',
                         text: 'Paiemesnts envoyes :' + response.envoyes + ' Recus :' + response.recus,
                         showConfirmButton: false,
-                        timer: 3000
                     })
                     //Bert.alert('Synchronisation Paiements complete!', 'success', 'growl-top-right');
 

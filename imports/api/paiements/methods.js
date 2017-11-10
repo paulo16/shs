@@ -34,44 +34,17 @@ Meteor.methods({
 
     parseUploadPaiements: function (data) {
         // Insertion des clients
+        let dateRegExp = /^([0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}){1}(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
+
         for (let i = 0; i < data.length; i++) {
-            let dateRegExp = /^([0-2][0-9]{3})\-(0[1-9]|1[0-2])\-([0-2][0-9]|3[0-1])(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
-            //var dateRegExp = /^([0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}){1}(\s[0-9]{0,2}:[0-9]{0,2}){0,1}$/;
             let item = data[i];
             if (item) {
-                /*
-                let date_paiement_manuelle;
-                if (item.dtSave != 'NULL' && item.dtSave != "" && item.dtSave != undefined) {
-                    let dtUpdateIter = (item.dtSave).split("-");
-                    date_paiement_manuelle = new Date(dtUpdateIter[0], dtUpdateIter[1] - 1, dtUpdateIter[2]);
-                } else {
-                    date_paiement_manuelle = date_paiement_auto ? date_paiement_auto : new Date('2001-01-01T00:00:00Z');
-                }
-
-                let date_paiement_auto;
-                if (item.dtupdate != 'NULL' && item.dtupdate != "" && item.dtupdate != undefined) {
-                    let dtUpdateIter = (item.dtupdate).split("-");
-                    date_paiement_auto = new Date(dtUpdateIter[0], dtUpdateIter[1] - 1, dtUpdateIter[2]);
-                } else {
-                    date_paiement_auto = date_paiement_manuelle ? date_paiement_manuelle : new Date('2001-01-01T00:00:00Z');
-                }
-                */
-
                 exists = Paiements.findOne({
                     date_paiement_auto: item.dtupdate,
                     recu_pdf: item.filename
                 });
 
                 if (!exists && item.total != '' && item.total != undefined) {
-                    /*
-                     let dtService;
-                     if (item.dtservice != 'NULL' && item.dtservice != null && item.dtservice != "" && item.dtservice != undefined) {
-                         dtServiceIter = (item.dtservice).split("-");
-                         dtService = new Date(dtServiceIter[0], dtServiceIter[1] - 1, dtServiceIter[2]);
-                     } else {
-                         dtService = new Date('2001-01-01T00:00:00Z');
-                     }
-                     */
 
                     let agent = {
                         numero_agent: item.agent,
@@ -85,9 +58,8 @@ Meteor.methods({
                         province: item.province,
                         commune: item.commune,
                         village: item.village,
-                        date_mise_service: dateRegExp.test(item.dtservice) ? item.dtservice : new Date('2001-01-01T00:00:00Z'),
+                        date_mise_service: dtService,
                     };
-
 
                     let paiement = {
                         agent: agent,
