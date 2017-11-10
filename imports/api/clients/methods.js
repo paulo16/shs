@@ -24,23 +24,19 @@ Meteor.methods({
 
         // Insertion des clients
         for (let i = 0; i < data.length; i++) {
-
+            let dateRegExp = /^([0-2][0-9]{3})\-(0[1-9]|1[0-2])\-([0-2][0-9]|3[0-1])(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
             let item = data[i];
-            exists = Clients.findOne({
-                nom: item.nom,
-                prenom: item.prenom,
-                cin: item.cin,
-                province: item.province,
-                'contrat.ref_contrat': item.ref_customer
-            });
+            if (item) {
+                exists = Clients.findOne({
+                    'contrat.ref_contrat': item.ref_customer
+                });
 
-            if (!exists && item.nom != '') {
                 let dtservice;
                 if (item.dtservice != 'NULL' && item.dtservice != "" && item.dtservice != undefined) {
                     let dtserviceTable = (item.dtservice).split("-");
                     dtservice = new Date(dtserviceTable[0], dtserviceTable[1] - 1, dtserviceTable[2]);
                 } else {
-                    dtservice = null;
+                    dtservice = dateRegExp.test(item.dtservice) ? item.dtservice : new Date('2001-01-01T00:00:00Z');
                 }
 
                 let contrat = {
@@ -55,9 +51,13 @@ Meteor.methods({
                     province: item.province,
                     commune: item.commune,
                     village: item.village,
+                    phone: item.phone,
+                    gpsouest: item.gpsouest,
+                    gpsnord: item.gpsnord,
                     contrat: contrat
                 }
                 Clients.insert(client);
+
             }
         }
 

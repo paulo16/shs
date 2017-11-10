@@ -17,6 +17,7 @@ let ClientSchema = new SimpleSchema({
 
   nom: {
     type: String,
+    optional: true
   },
 
   prenom: {
@@ -55,6 +56,19 @@ let ClientSchema = new SimpleSchema({
     optional: true
   },
 
+  phone: {
+    type: String,
+    optional: true
+  },
+  gpsouest: {
+    type: String,
+    optional: true
+  },
+  gpsnord: {
+    type: String,
+    optional: true
+  },
+
   contrat: {
     type: contratSchema,
     optional: true
@@ -63,5 +77,3 @@ let ClientSchema = new SimpleSchema({
 });
 
 Clients.attachSchema(ClientSchema);
-
-
