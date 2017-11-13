@@ -51,6 +51,7 @@ Meteor.methods({
             let config = JSON.parse(Assets.getText('config-server.json'));
             let remoteConnection = DDP.connect(config.url_serveur);
             console.log('Url: ' + config.url_serveur);
+            console.log('status : ' + JSON.stringify(remoteConnection.status));
 
             let remotePaiements = new Mongo.Collection('paiements', remoteConnection);
             // Subscribe to items collection we got via DDP
@@ -173,6 +174,8 @@ Meteor.methods({
             let config = JSON.parse(Assets.getText('config-server.json'));
             let remoteConnection = DDP.connect(config.url_serveur);
             console.log('Url: ' + config.url_serveur);
+            console.log('status : ' + JSON.stringify(remoteConnection.status));
+
             let result = remoteConnection.call('paiementsTranscation', JSON.stringify(paiements));
             return result;
         } catch (e) {
@@ -198,6 +201,7 @@ Meteor.methods({
                 let config = JSON.parse(Assets.getText('config-server.json'));
                 let remoteConnection = DDP.connect(config.url_serveur);
                 console.log('Url: ' + config.url_serveur);
+                //console.log(JSON.stringify(remoteConnection[0]));
                 let paiementsAgent = Paiements.find({
                     date_paiement_auto: {
                         $gt: datesynchro[0].maxdate
