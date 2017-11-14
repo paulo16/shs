@@ -5,6 +5,9 @@ import moment from 'moment';
 import {
     Template
 } from 'meteor/templating';
+import {
+    FlowRouter
+} from 'meteor/ostrio:flow-router-extra';
 //import { Pdfs } from '/imports/api/pdfs/pdfs.js';
 import pdf from 'html-pdf';
 import 'meteor/themeteorchef:jquery-validation';
@@ -17,8 +20,13 @@ import './effectuerPaiement.html';
 let infoClient;
 
 Template.effectuerPaiement.onCreated(() => {
+    let currentUrl = FlowRouter.current();
+    let contrat = currentUrl.params;
+    //console.log('contrat: '+JSON.stringify(contrat));
+
     Template.instance().genrecu = new ReactiveVar(false);
     Session.set('idpaiement', '');
+    Session.set('contrat', contrat.ref_contrat);
     Session.set('showhistorique', 'false');
 });
 
@@ -55,7 +63,7 @@ Template.effectuerPaiement.events({
                             '<div>' +
                             '<img src="/images/customer.png" width="65px" height="65px" class="user-profile-image img-circle" alt="">' +
                             '<span class="text-center m-t-lg"><B>&nbsp;' + result.nom + '&nbsp;&nbsp;' + result.prenom + '</B></span>' +
-                            '<span><i class="icon-pointer m-r-xs"></i>&nbsp;&nbsp;&nbsp; Adresse :&nbsp;&nbsp;' + result.province + ' , ' + result.commune + ' , ' + result.village + '</span>' +
+                            '<span><i class="icon-pointer m-r-xs"></i>&nbsp;&nbsp;&nbsp;Province :&nbsp;&nbsp;' + result.province + ' ,Commune ' + result.commune + ' ,Village ' + result.village + ' Contrat :' + result.commune + '</span>' +
                             '<span><i class="icon-envelope-open m-r-xs"></i><a href="#">;&nbsp;&nbsp Date Mise en Service : &nbsp;' + moment(result.contrat.date_mise_service).format("DD-MM-YYYY HH:mm") + '</a></span>' +
                             '</div>';
                     }
@@ -206,6 +214,9 @@ Template.effectuerPaiement.events({
 
 
 Template.effectuerPaiement.onRendered(function () {
+
+    if (Session.get('contrat')) $("#input-search").val(Session.get('contrat'));
+
     $('#show-historique').hide();
 
     $("#form-paye").validate({
