@@ -8,6 +8,7 @@ Template.synchro.onCreated(() => {
     Template.instance().synchroclients = new ReactiveVar(false);
     Template.instance().synchropaiements = new ReactiveVar(false);
     Template.instance().synchrousers = new ReactiveVar(false);
+    Session.set('status', '');
 });
 
 Template.synchro.helpers({
@@ -52,29 +53,28 @@ Template.synchro.events({
                     'Problème lors de la synchronisation ,verifiez votre connection !',
                     'error'
                 )
-            } else if (response) {
-                if (response == false) {
-                    template.synchropaiements.set(false);
-                    swal(
-                        'Oops...',
-                        'Problème lors de la synchronisation ,verifiez votre connection !',
-                        'error'
-                    )
-                } else {
-                    console.log(response);
+            } else if (response == false) {
+                template.synchropaiements.set(false);
+                swal(
+                    'Oops...',
+                    'Problème lors de la synchronisation ,verifiez votre connection internet et que le serveur en ligne est en marche !',
+                    'error'
+                )
+            } else {
+                console.log(response);
 
-                    template.synchropaiements.set(false);
-                    swal({
-                        position: 'top-right',
-                        type: 'success',
-                        title: 'Synchronisation complete',
-                        text: 'Paiemesnts envoyes :' + response.envoyes + ' Recus :' + response.recus,
-                        showConfirmButton: false,
-                    })
-                    //Bert.alert('Synchronisation Paiements complete!', 'success', 'growl-top-right');
+                template.synchropaiements.set(false);
+                swal({
+                    position: 'top-right',
+                    type: 'success',
+                    title: 'Synchronisation complete',
+                    text: 'Paiemesnts envoyes :' + response.envoyes + ' Recus :' + response.recus,
+                    showConfirmButton: false,
+                })
+                //Bert.alert('Synchronisation Paiements complete!', 'success', 'growl-top-right');
 
-                }
             }
+
         });
     },
 

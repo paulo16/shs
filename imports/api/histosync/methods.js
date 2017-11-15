@@ -51,7 +51,7 @@ Meteor.methods({
             let config = JSON.parse(Assets.getText('config-server.json'));
             let remoteConnection = DDP.connect(config.url_serveur);
             console.log('Url: ' + config.url_serveur);
-            console.log('status : ' + JSON.stringify(remoteConnection.status));
+            console.log('status : ' + JSON.stringify(remoteConnection.status.connected));
 
             let remotePaiements = new Mongo.Collection('paiements', remoteConnection);
             // Subscribe to items collection we got via DDP
@@ -167,7 +167,7 @@ Meteor.methods({
             }
         }).fetch();
 
-        //console.log('paiements: ' + JSON.stringify(paiements));
+        console.log('status : ' + JSON.stringify(remoteConnection.status.connected));
 
         try {
 
@@ -191,9 +191,10 @@ Meteor.methods({
         this.unblock();
         let datedebut = new Date();
         let dateinit = Meteor.call('insertDateLastSynchroPaiements');
-
+        let status = Meteor.call('checkConnection');
+        console.log('status connect : ' + status);
         try {
-            if (dateinit) {
+            if (dateinit && status) {
                 console.log('date init ' + dateinit);
                 let datesynchro = Meteor.call('getlastSynchroTable', 'paiements');
                 console.log('date sync : ' + JSON.stringify(datesynchro[0]));
@@ -201,7 +202,8 @@ Meteor.methods({
                 let config = JSON.parse(Assets.getText('config-server.json'));
                 let remoteConnection = DDP.connect(config.url_serveur);
                 console.log('Url: ' + config.url_serveur);
-                //console.log(JSON.stringify(remoteConnection[0]));
+                console.log('status : ' + JSON.stringify(remoteConnection.status()));
+
                 let paiementsAgent = Paiements.find({
                     date_paiement_auto: {
                         $gt: datesynchro[0].maxdate
@@ -211,7 +213,7 @@ Meteor.methods({
 
                 let numero = Meteor.user() ? Meteor.user().profile.numero_agent : '199';
                 let paiementsServer = remoteConnection.call('getPaiementsServerLastSynchro', datesynchro[0].maxdate, numero);
-
+                console.log('paiements distant : ' + JSON.stringify(paiementsServer));
                 let nbrepaiementsRecus = paiementsServer.length;
                 txid = tx.start("Insert server Paiements to Agent");
 
@@ -282,6 +284,39 @@ Meteor.methods({
         }).fetch();
         return paiements;
 
+    },
+
+    checkConnection: function () {
+        'use strict';
+        var fs = Npm.require('fs');
+        var Future = Npm.require('fibers/future');
+        var fut = new Future();
+
+        let MeteorPing = require('meteor-ping');
+        let config = JSON.parse(Assets.getText('config-server.json'));
+        console.log('url: ' + config.url_self);
+
+        // all args are optional, here are the defaults 
+        var localApp = new MeteorPing({
+            host: config.url_self,
+            port: 3000,
+            ssl: false,
+            connectTimeout: 10 * 1000, // 10 seconds 
+            //subscribeTimeout: 10 * 1000,
+            // collection: 'paiements'
+        });
+
+        localApp.ping(Meteor.bindEnvironment(function (error, result) {
+            if (error) {
+                console.error(error);
+                fut.return(false);
+            } else {
+                console.log('done. Milliseconds elapsed: ' + result.elapsedTimeInMs);
+                fut.return(true);
+            }
+
+        }));
+        return fut.wait();
     }
 
 });
