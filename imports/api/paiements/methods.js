@@ -34,7 +34,10 @@ Meteor.methods({
 
     parseUploadPaiements: function (data) {
         // Insertion des clients
+
         let dateRegExp = /^([0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}){1}(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
+        let dateRegExp1 = /^(\d{2})\/(\d{2})\/(\d{4})(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
+        let dateRegExp2 = /^([0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}){1}(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
 
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
@@ -50,6 +53,17 @@ Meteor.methods({
                         numero_agent: item.agent,
                         lastName: item.lastname
                     };
+                    let dtService;
+
+                    if (dateRegExp1.test(item.dtservice)) {
+                        dtServiceIter = (item.dtservice).split("/");
+                        dtService = new Date(dtServiceIter[2], dtServiceIter[1] - 1, dtServiceIter[0]);
+                    } else if (dateRegExp2.test(item.dtservice)) {
+                        dtServiceIter = (item.dtservice).split("-");
+                        dtService = new Date(dtServiceIter[0], dtServiceIter[1] - 1, dtServiceIter[2]);
+                    } else {
+                        dtService = new Date('2001-01-01T00:00:00Z');
+                    }
 
                     let client = {
                         ref_contrat: item.ref_customer,

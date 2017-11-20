@@ -115,7 +115,7 @@ authenticatedRoutes.route('/etats-paiements-clients', {
     }
 });
 
-authenticatedRoutes.route('/effectuer-paiement/:ref_contrat', {
+authenticatedRoutes.route('/effectuer-paiement', {
     name: 'effectuerPaiement',
     action: function () {
         BlazeLayout.render("appLayout", {
