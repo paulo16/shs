@@ -99,6 +99,11 @@ Template.effectuerPaiement.events({
         let m = mois * 30;
         $("#montant").val(mois * 30);
     },
+    'keyup #montant': function (event, template) {
+        event.preventDefault();
+        let mois = event.target.value;
+        $("#mois").val(mois / 30);
+    },
 
     'change #type-paie': function (event, template) {
         event.preventDefault();
