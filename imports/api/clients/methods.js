@@ -109,6 +109,16 @@ Meteor.methods({
         //console.log(provinces);
         return provinces;
     },
+    listeCommunes: function () {
+        let provinces = Clients.distinct('commune');
+        //console.log(provinces);
+        return provinces;
+    },
+    listeVillages: function () {
+        let provinces = Clients.distinct('village');
+        //console.log(provinces);
+        return provinces;
+    },
 
     nombreClient: function () {
 
