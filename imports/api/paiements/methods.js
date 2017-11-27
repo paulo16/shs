@@ -68,6 +68,7 @@ Meteor.methods({
                     let client = {
                         ref_contrat: item.ref_customer,
                         nom: item.nom,
+                        prenom: item.prenom,
                         cin: item.cin,
                         province: item.province,
                         commune: item.commune,
@@ -131,7 +132,9 @@ Meteor.methods({
     },
     insertPaiement: function (paiement) {
         let valretour;
-        return Paiements.insert(paiement);
+        let idp = Paiements.insert(paiement)
+        let pdf = Meteor.call('generate_pdf', idp);
+        return pdf;
     },
     findClientParProvince: function () {
 
@@ -409,7 +412,12 @@ Meteor.methods({
             // PREPARE DATA
             var paiement = Paiements.findOne({
                 _id: id
+            }, {
+                fields: {
+                    'agent.numero_agent': 0
+                }
             });
+            console.log('paiements: ' + JSON.stringify(paiement));
             let dtpaie = moment(paiement.date_paiement_manuelle).format("DD-MM-YYYY-HH-mm-ss");
             let dtp = moment(paiement.date_paiement_manuelle).format("DD-MM-YYYY HH:mm:ss");
             paiement.datepaiement = dtp;

@@ -45,7 +45,7 @@ Template.compoAddClient.events({
                         contrat: contrat
 
                     };
-                    /*
+                    
                      Meteor.call('insertClient', client, function (error, result) {
                          if (error) {
                              console.log(error);
@@ -56,7 +56,7 @@ Template.compoAddClient.events({
                              FlowRouter.go('listClients');
                          }
                      });
-                     */
+                    
 
                 }
 

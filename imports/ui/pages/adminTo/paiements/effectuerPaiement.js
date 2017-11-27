@@ -93,6 +93,12 @@ Template.effectuerPaiement.events({
             Session.set('showhistorique', false);
         }
     },
+    'keyup #mois': function (event, template) {
+        event.preventDefault();
+        let mois = event.target.value;
+        let m = mois * 30;
+        $("#montant").val(mois * 30);
+    },
 
     'change #type-paie': function (event, template) {
         event.preventDefault();
@@ -167,16 +173,38 @@ Template.effectuerPaiement.events({
                 closeOnConfirm: false,
                 html: false
             }, function () {
+                swal({
+                    title: 'Sweet!',
+                    text: 'Veillez Patienter svp !',
+                    imageUrl: '/images/Ellipsis.gif',
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'patienter',
+                    animation: false
+                });
 
-                Meteor.call('insertPaiement', paiement, function (error, result) {
+                Meteor.call('insertPaiement', paiement, function (error, res) {
                     if (error) {
                         //console.log(error);
                         swal("Oups", " Problème ,validation non éffectué", "error");
+                    } else if (res != null) {
+
+                        template.genrecu.set(false);
+                        let url = '/cfs/files/' + res.collectionName + '/' + res._id + '/' + res.original.name;
+                        //console.log("la reponse serveur:" + JSON.stringify(res._id) + 'mon url' + url);
+                        Meteor.setTimeout(function () {
+                            window.open(url, '_blank');
+                        }, 1000);
+                        swal({
+                            type: 'success',
+                            title: 'Paiement Bien éffectué !!',
+                            showConfirmButton: false,
+                        });
+                        $('#montant').val('');
+                        $("#mois").val('');
                     } else {
-                        //console.log(result);
-                        Session.set('idpaiement', result);
-                        swal("OK!", "Paiement bien validé.", "success");
-                        $("#impression").show();
+                        template.genrecu.set(false);
+                        swal("Oups...", "Pétit problème ,Impossible de génerer pdf !", "error");
                     }
                 });
 
@@ -270,7 +298,7 @@ function showhistorique() {
     Meteor.call('findHistorique', $('#input-search').val(), function (error, result1) {
         if (error) {
             console.log(error);
-        } else {
+        } else if (result1 != undefined && result1 != '') {
             //console.log(result);
             //let content = '<span> Aucun résulat trouvé</span>';
             let dataset = [];
@@ -281,24 +309,26 @@ function showhistorique() {
                 let contenu;
                 let lien;
                 res1.forEach(function (element) {
+                    if (element) {
 
-                    if (element.recu_pdf) {
-                        lien = element.recu_pdf.replace(/.*pdfs\\/, "");
+                        if (element.recu_pdf) {
+                            lien = element.recu_pdf.replace(/.*pdfs\\/, "");
+                        }
+                        if (typeof element.type_paiement === undefined) {
+                            element.type_paiement = "";
+
+                        }
+                        contenu = [
+                            element.agent.lastName,
+                            element.client.cin,
+                            moment(element.date_paiement_auto).format("DD-MM-YYYY HH:mm"),
+                            lien,
+                            //element.type_paiement,
+                            element.montant
+
+                        ];
+                        dataset.push(contenu);
                     }
-                    if (typeof element.type_paiement === undefined) {
-                        element.type_paiement = "";
-
-                    }
-                    contenu = [
-                        element.agent.lastName,
-                        element.client.cin,
-                        moment(element.date_paiement_auto).format("DD-MM-YYYY HH:mm"),
-                        lien,
-                        //element.type_paiement,
-                        element.montant
-
-                    ];
-                    dataset.push(contenu);
                 })
 
 

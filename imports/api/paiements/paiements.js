@@ -35,6 +35,10 @@ let clientSchema = new SimpleSchema({
         type: String,
         optional: true
     },
+    prenom: {
+        type: String,
+        optional: true
+    },
     cin: {
         type: String,
         optional: true
