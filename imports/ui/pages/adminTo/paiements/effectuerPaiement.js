@@ -63,7 +63,7 @@ Template.effectuerPaiement.events({
                             '<div>' +
                             '<img src="/images/customer.png" width="65px" height="65px" class="user-profile-image img-circle" alt="">' +
                             '<span class="text-center m-t-lg"><B>&nbsp;' + result.nom + '&nbsp;&nbsp;' + result.prenom + '</B></span>' +
-                            '<span><i class="icon-pointer m-r-xs"></i>&nbsp;&nbsp;&nbsp;Province :&nbsp;&nbsp;' + result.province + ' ,Commune ' + result.commune + ' ,Village ' + result.village + ' Contrat :' + result.commune + '</span>' +
+                            '<span><i class="icon-pointer m-r-xs"></i>&nbsp;&nbsp;&nbsp;Province :&nbsp;&nbsp;' + result.province + ' ,Commune : ' + result.commune + ' ,&bnsp;Village: ' + result.village + ',&bnsp; Contrat :' + result.contrat.ref_contrat + '</span>' +
                             '<span><i class="icon-envelope-open m-r-xs"></i><a href="#">;&nbsp;&nbsp Date Mise en Service : &nbsp;' + moment(result.contrat.date_mise_service).format("DD-MM-YYYY HH:mm") + '</a></span>' +
                             '</div>';
                     }

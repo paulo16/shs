@@ -1,6 +1,7 @@
 <template name='synchro'>
     <div class="row">
         <div class="col-md-12">
+            {{#if isInRole 'admin'}}
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title">SYNCHRONISATION CLIENTS</h4>
@@ -9,15 +10,17 @@
 
                     <h4 class="page-header">Clients</h4>
 
-                        {{#unless synchroclients}}
-                        <button type="button" class="btn btn-primary " id="synchroclients">sync clients</button>
-                      {{else}}
-                        <p><i class="fa fa-spin fa-refresh"></i> Synchronisation des clients  en cours ,  Veillez Patienter svp  ...</p>
-                      {{/unless}}
+                    {{#unless synchroclients}}
+                    <button type="button" class="btn btn-primary " id="synchroclients">sync clients</button>
+                    {{else}}
+                    <p>
+                        <i class="fa fa-spin fa-refresh"></i> Synchronisation des clients en cours , Veillez Patienter svp ...</p>
+                    {{/unless}}
 
                 </div>
-                
+
             </div>
+            {{/if}}
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title">SYNCHRONISATION PAIEMENTS</h4>
@@ -25,16 +28,18 @@
                 <div class="panel-body">
 
                     <h4 class="page-header">PAIEMENTS</h4>
-                    
-                      {{#unless synchropaiements}}
-                        <button type="button" class="btn btn-primary " id="synchropaiements">Sync paiements</button>
-                      {{else}}
-                        <p><i class="fa fa-spin fa-refresh"></i> Synchronisation des paiements  en cours ,  Veillez Patienter svp ...</p>
-                      {{/unless}}
+
+                    {{#unless synchropaiements}}
+                    <button type="button" class="btn btn-primary " id="synchropaiements">Sync paiements</button>
+                    {{else}}
+                    <p>
+                        <i class="fa fa-spin fa-refresh"></i> Synchronisation des paiements en cours , Veillez Patienter svp ...</p>
+                    {{/unless}}
 
                 </div>
-                
+
             </div>
+            {{#if isInRole 'admin'}}
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title">SYNCHRONISATION DES UTILISATEURS</h4>
@@ -42,16 +47,18 @@
                 <div class="panel-body">
 
                     <h4 class="page-header">UTILISATEURS</h4>
-                    
-                      {{#unless synchrousers}}
-                        <button type="button" class="btn btn-primary " id="synchrousers">Sync Utilisateurs</button>
-                      {{else}}
-                        <p><i class="fa fa-spin fa-refresh"></i> Synchronisation des utilisateurs  en cours , Veillez Patienter svp  ...</p>
-                      {{/unless}}
+
+                    {{#unless synchrousers}}
+                    <button type="button" class="btn btn-primary " id="synchrousers">Sync Utilisateurs</button>
+                    {{else}}
+                    <p>
+                        <i class="fa fa-spin fa-refresh"></i> Synchronisation des utilisateurs en cours , Veillez Patienter svp ...</p>
+                    {{/unless}}
 
                 </div>
-                
+
             </div>
+            {{/if}}
         </div>
 
     </div>
