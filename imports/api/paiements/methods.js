@@ -685,7 +685,7 @@ Meteor.methods({
 
     findPaiementByDay: function (filtre) {
         let paiements;
-        console.log('agent : ' + JSON.stringify(filtre));
+        //console.log('agent : ' + JSON.stringify(filtre));
         if (filtre.agent) {
             let agent = Meteor.users.findOne({
                 username: filtre.agent
