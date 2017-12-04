@@ -135,6 +135,9 @@ Template.dashboard.events({
 
     "submit  #form-search-paiement": function (event, template) {
         event.preventDefault();
+        $('#client-jour-total').html('');
+        $('#montant-jour-total').html('');
+
         showStatsAgents(Meteor.user().username);
     }
 
@@ -173,7 +176,7 @@ function showStatsAgents(pseudo) {
             dateDebut: dateDebut,
             dateFin: dateFin
         };
-        console.log('filtre exsite -' + JSON.stringify(filtre));
+        //console.log('filtre exsite -' + JSON.stringify(filtre));
         //Session.set("filtre", filtre);
         Meteor.call('findPaiementByDay', filtre, (error, result) => {
             if (error) {

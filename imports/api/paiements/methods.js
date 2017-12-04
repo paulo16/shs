@@ -685,7 +685,7 @@ Meteor.methods({
 
     findPaiementByDay: function (filtre) {
         let paiements;
-        //console.log('agent : ' + JSON.stringify(agent));
+        console.log('agent : ' + JSON.stringify(filtre));
         if (filtre.agent) {
             let agent = Meteor.users.findOne({
                 username: filtre.agent
@@ -693,11 +693,13 @@ Meteor.methods({
 
             paiements = Paiements.aggregate([{
                     $match: {
-                        date_paiement_auto: {
-                            $gt: filtre.dateDebut,
-                            $lt: filtre.dateFin
-                        },
-                        'agent.lastName': agent.profile.lastName
+                        $and: [{
+                            date_paiement_auto: {
+                                $gt: filtre.dateDebut,
+                                $lt: filtre.dateFin
+                            },
+                            'agent.lastName': agent.profile.lastName
+                        }]
                     }
                 },
                 {
@@ -713,10 +715,12 @@ Meteor.methods({
         } else {
             paiements = Paiements.aggregate([{
                     $match: {
-                        date_paiement_auto: {
-                            $gt: filtre.dateDebut,
-                            $lt: filtre.dateFin
-                        },
+                        $and: [{
+                            date_paiement_auto: {
+                                $gt: filtre.dateDebut,
+                                $lt: filtre.dateFin
+                            },
+                        }]
                     }
                 },
                 {
