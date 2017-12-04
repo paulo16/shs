@@ -18,6 +18,7 @@ import {
     HistoSync
 } from '/imports/api/histosync/histosync.js';
 
+
 Paiements.allow({
     insert: function (userId, doc) {
         return true;
@@ -427,7 +428,11 @@ Meteor.methods({
                 paiement: paiement
             };
 
-            var fileName = dtpaie + '-' + paiement.client.cin + '-' + paiement.client.ref_contrat + ".pdf";
+            var str = paiement.client.ref_contrat;
+            var nouvelleStr = str.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "-");
+            //console.log(nouvelleStr);
+
+            var fileName = dtpaie + '-' + paiement.client.cin + '-' + nouvelleStr + ".pdf";
 
             var html_string = SSR.render('layout', {
                 css: css,
@@ -678,29 +683,53 @@ Meteor.methods({
         return fut.wait();
     },
 
-    findPaiementByDay: function () {
+    findPaiementByDay: function (filtre) {
         let paiements;
-        let today = new Date();
-        let datedebut = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);;
-        let datefin = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 0, 0);;
+        //console.log('agent : ' + JSON.stringify(agent));
+        if (filtre.agent) {
+            let agent = Meteor.users.findOne({
+                username: filtre.agent
+            });
 
-        paiements = Paiements.aggregate([{
-                $match: {
-                    date_paiement_manuelle: {
-                        $gt: datedebut,
-                        $lt: datefin
+            paiements = Paiements.aggregate([{
+                    $match: {
+                        date_paiement_auto: {
+                            $gt: filtre.dateDebut,
+                            $lt: filtre.dateFin
+                        },
+                        'agent.lastName': agent.profile.lastName
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$client.ref_contrat",
+                        total: {
+                            $sum: "$montant"
+                        }
                     }
                 }
-            },
-            {
-                $group: {
-                    _id: "$client.ref_contrat",
-                    total: {
-                        $sum: "$montant"
+            ]);
+
+        } else {
+            paiements = Paiements.aggregate([{
+                    $match: {
+                        date_paiement_auto: {
+                            $gt: filtre.dateDebut,
+                            $lt: filtre.dateFin
+                        },
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$client.ref_contrat",
+                        total: {
+                            $sum: "$montant"
+                        }
                     }
                 }
-            }
-        ]);
+            ]);
+        }
+
 
         return paiements;
     },

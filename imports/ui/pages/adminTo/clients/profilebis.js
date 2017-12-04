@@ -68,8 +68,8 @@ Template.profilebis.onRendered(function () {
                 let res2 = Session.get('result2');
                 // console.log(JSON.stringify('les sommes ' + result));
                 let element = '<div style="height: 70px;line-height: 70px;text-align: center;border: 1px dashed #f69c55;">';
-                let scp = monthDiff(res2[0]._id.date_mise_service, new Date()) * 30;
-                let msp = monthDiff(res2[0]._id.date_mise_service, new Date());
+                let scp = (monthDiff(res2[0]._id.date_mise_service, new Date()) * 30) + 30;
+                let msp = monthDiff(res2[0]._id.date_mise_service, new Date()) + 1;
                 let sp = res2[0].total ? res2[0].total : 0;
                 let mp = Math.floor(sp / 30);
                 let sa = Math.abs(scp - sp);

@@ -1,7 +1,13 @@
-import { Meteor } from 'meteor/meteor';
-import {Accounts} from 'meteor/accounts-base';
+import {
+    Meteor
+} from 'meteor/meteor';
+import {
+    Accounts
+} from 'meteor/accounts-base';
 import 'meteor/alanning:roles';
-import { Users } from './users.js';
+import {
+    Users
+} from './users.js';
 import 'meteor/monbro:mongodb-mapreduce-aggregation';
 
 Meteor.users.allow({
@@ -57,17 +63,17 @@ Meteor.methods({
                             Meteor.users.update({
                                 numero_agent: fields.profile.numero_agent
                             }, {
-                                    $set: {
-                                        username: fields.username,
-                                        password: fields.password,
-                                        emails: fields.emails,
-                                        profile: fields.profile,
-                                        services: fields.services,
-                                        roles: fields.roles,
-                                    }
-                                },
-                                { upsert: true }
-                            );
+                                $set: {
+                                    username: fields.username,
+                                    password: fields.password,
+                                    emails: fields.emails,
+                                    profile: fields.profile,
+                                    services: fields.services,
+                                    roles: fields.roles,
+                                }
+                            }, {
+                                upsert: true
+                            });
                         }
                     },
                     added: function (id, fields) {
@@ -75,18 +81,18 @@ Meteor.methods({
                             Meteor.users.update({
                                 numero_agent: fields.profile.numero_agent
                             }, {
-                                    $set: {
-                                        username: fields.username,
-                                        password: fields.password,
-                                        createdAt: fields.createdAt,
-                                        emails: fields.emails,
-                                        profile: fields.profile,
-                                        services: fields.services,
-                                        roles: fields.roles,
-                                    }
-                                },
-                                { upsert: true }
-                            );
+                                $set: {
+                                    username: fields.username,
+                                    password: fields.password,
+                                    createdAt: fields.createdAt,
+                                    emails: fields.emails,
+                                    profile: fields.profile,
+                                    services: fields.services,
+                                    roles: fields.roles,
+                                }
+                            }, {
+                                upsert: true
+                            });
                         }
                     },
                     removed: function (id) {
@@ -97,13 +103,21 @@ Meteor.methods({
 
                 console.log('synchro down collection distante ok ');
 
-                let usersLocals = Meteor.users.find({}, { fields: { 'profile.numero_agent': 1 } }).fetch();
+                let usersLocals = Meteor.users.find({}, {
+                    fields: {
+                        'profile.numero_agent': 1
+                    }
+                }).fetch();
                 let arrusersLocals = [];
                 usersLocals.forEach(function (element) {
                     arrusersLocals.push(element.profile.numero_agent);
                 });
 
-                let usersDistants = remoteUsers.find({}, { fields: { 'profile.numero_agent': 1 } }).fetch();
+                let usersDistants = remoteUsers.find({}, {
+                    fields: {
+                        'profile.numero_agent': 1
+                    }
+                }).fetch();
                 let arrusersDistants = [];
                 usersDistants.forEach(function (element) {
                     arrusersDistants.push(element.profile.numero_agent);
@@ -111,7 +125,11 @@ Meteor.methods({
 
                 let array_numeroAgent_remote = _.uniq(_.difference(arrusersLocals, arrusersDistants));
                 //console.log('array_numeroAgent_remote :' + JSON.stringify(array_numeroAgent_remote));
-                let array_users_addremote = Meteor.users.find({ 'profile.numero_agent': { $in: array_numeroAgent_remote } }).fetch();
+                let array_users_addremote = Meteor.users.find({
+                    'profile.numero_agent': {
+                        $in: array_numeroAgent_remote
+                    }
+                }).fetch();
                 //console.log(' array_users_addremote :' + JSON.stringify(array_users_addremote));
 
                 array_users_addremote.forEach(function (element) {
@@ -135,7 +153,9 @@ Meteor.methods({
         let Future = Npm.require('fibers/future');
         let fut = new Future();
         //console.log('id : ' + id);
-        Meteor.users.remove({ _id: id }, (err) => {
+        Meteor.users.remove({
+            _id: id
+        }, (err) => {
             if (err) throw new Meteor.Error("suppression", "erreur lors de la suppresion", err);
             fut.return(true);
         });
@@ -147,23 +167,27 @@ Meteor.methods({
             Meteor.users.update({
                 _id: user._id
             }, {
-                    $set: {
-                        username: user.username,
-                        'emails.0.address': user.email,
-                        profile: user.profile,
-                        //services: user.services,
-                        roles: user.roles,
-                        createdAt: new Date()
-                    }
-                },
-                { upsert: true }
-            );
+                $set: {
+                    username: user.username,
+                    'emails.0.address': user.email,
+                    profile: user.profile,
+                    //services: user.services,
+                    roles: user.roles,
+                    createdAt: new Date()
+                }
+            }, {
+                upsert: true
+            });
 
             Accounts.setPassword(user._id, user.password);
             //
         }
 
-    }
+    },
+    lesAgents: function () {
+        let agents = Meteor.users.distinct('username');
+        //console.log(provinces);
+        return agents;
+    },
 
 });
-

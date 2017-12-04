@@ -4,7 +4,7 @@
             <div class="card-box">
                 <h4 class="header-title m-t-0 m-b-30">Clients par Province</h4>
 
-                <canvas id="clients-province" class="chart" width="400" height="200"></canvas>
+                <canvas id="clients-province" class="chart" width="400" height="300"></canvas>
             </div>
         </div>
         {{#if isInRole 'admin'}}
@@ -19,13 +19,43 @@
         <div class="col-lg-6">
             <div class="card-box">
                 <h4 class="header-title m-t-0 m-b-30">Clients/jour</h4>
-                <div class="widget-chart-1">
+                <hr/>
+                <form id="form-search-paiement">
+                    <table cellpadding="3" class="display" cellspacing="1" border="0" style=" border-spacing: 10px; border-collapse: separate;">
+                        <thead>
+                            <tr>
+                                <th>Date Début</th>
+                                <th>Date Fin</th>
+                                <th>agent</th>
+                                <th>Action</th>
+                                <th>&nbsp;&nbsp;&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="left">
+                                    <input type='text' id='date-debut' value="{{datenow}}" class="form-control datepicker" />
+                                </td>
+                                <td align="left">
+                                    <input class="form-control" value="{{datenow}}" type="text" id="date-fin">
+                                </td>
 
-                    <div class="widget-detail-1">
-                        <h2 class="p-t-10 m-b-0" id="client-jour-total"></h2>
-                        <span></span>
-                        <p class="text-muted">Nombre de clients traités aujourd'hui</p>
-                    </div>
+                                <td align="left">
+                                    <div class="select-province">{{lesAgents}}</div>
+                                </td>
+                                <td align="left">
+                                    <button type="submit" class="btn btn-info waves-effect waves-light">lancer</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+                <hr/>
+
+                <div class="widget-detail-1">
+                    <h2 class="p-t-10 m-b-0" id="client-jour-total"></h2>
+                    <span></span>
+                    <p class="text-muted">Nombre de clients traités</p>
                 </div>
             </div>
             <div class="card-box">
