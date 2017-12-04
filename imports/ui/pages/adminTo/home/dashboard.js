@@ -137,15 +137,16 @@ Template.dashboard.events({
         event.preventDefault();
         $('#client-jour-total').html('');
         $('#montant-jour-total').html('');
+        let pseudo = $("#agents").val();
 
-        showStatsAgents(Meteor.user().username);
+        showStatsAgents(pseudo);
     }
 
 });
 
 function showStatsAgents(pseudo) {
 
-    let agent = $("#agent").val() ? $("#agent").val() : pseudo;
+    let agent = $("#agents").val() ? $("#agents").val() : pseudo;
 
     let dateDebut;
     let today = new Date();
