@@ -469,7 +469,7 @@ Meteor.methods({
                     if (err) throw err;
                     newFile.name(fileName);
                     let fileObj = Pdfs.insert(newFile);
-                    console.log('insert pdf ok result: ', fileObj.original.name);
+                    //console.log('insert pdf ok result: ', fileObj.original.name);
                     Paiements.update({
                         _id: id
                     }, {
@@ -480,7 +480,7 @@ Meteor.methods({
                     let monpdf = Pdfs.findOne({
                         _id: fileObj._id
                     });
-                    console.log('insert pdf ok result: ', JSON.stringify(fileObj.url()));
+                    //console.log('insert pdf ok result: ', JSON.stringify(fileObj.url()));
                     fut.return(monpdf);
                 });
             }));

@@ -47,7 +47,7 @@ Template.effectuerPaiement.events({
         //info sur le client 
 
         //Historique des paiements 
-        if ($('#input-search').val() != "") {
+        if ($('#input-search').val() != "" && $('#input-search').val().length >= 5) {
 
 
             Meteor.call('findClient', $('#input-search').val(), function (error, result) {
@@ -63,7 +63,7 @@ Template.effectuerPaiement.events({
                             '<div>' +
                             '<img src="/images/customer.png" width="65px" height="65px" class="user-profile-image img-circle" alt="">' +
                             '<span class="text-center m-t-lg"><B>&nbsp;' + result.nom + '&nbsp;&nbsp;' + result.prenom + '</B></span>' +
-                            '<span><i class="icon-pointer m-r-xs"></i>&nbsp;&nbsp;&nbsp;Province :&nbsp;&nbsp;' + result.province + ' ,Commune : ' + result.commune + ' ,&bnsp;Village: ' + result.village + ',&bnsp; Contrat :' + result.contrat.ref_contrat + '</span>' +
+                            '<span><i class="icon-pointer m-r-xs"></i>&nbsp;&nbsp;&nbsp;Province :&nbsp;&nbsp;' + result.province + ' , <b>Commune</b> : ' + result.commune + ' , <b>Village</b>: ' + result.village + ', <br> <b>Cin:</b>' + result.cin + ' </span>' +
                             '<span><i class="icon-envelope-open m-r-xs"></i><a href="#">;&nbsp;&nbsp Date Mise en Service : &nbsp;' + moment(result.contrat.date_mise_service).format("DD-MM-YYYY HH:mm") + '</a></span>' +
                             '</div>';
                     }
@@ -93,12 +93,14 @@ Template.effectuerPaiement.events({
             Session.set('showhistorique', false);
         }
     },
+
     'keyup #mois': function (event, template) {
         event.preventDefault();
         let mois = event.target.value;
         let m = mois * 30;
         $("#montant").val(mois * 30);
     },
+
     'keyup #montant': function (event, template) {
         event.preventDefault();
         let mois = event.target.value;
@@ -307,7 +309,9 @@ function showhistorique() {
         } else if (result1 != undefined && result1 != '') {
             //console.log(result);
             //let content = '<span> Aucun résulat trouvé</span>';
-            let dataset = [];
+            let dataset = [
+                ["", "", "", "", ""]
+            ];
             Session.set('result1', result1);
             let res1 = Session.get('result1');
             if (res1 && res1 != undefined && res1 != "") {
@@ -324,6 +328,11 @@ function showhistorique() {
                             element.type_paiement = "";
 
                         }
+
+                        if (!element.agent.lastName) {
+                            element.agent.lastName = 'vide';
+                        }
+
                         contenu = [
                             element.agent.lastName,
                             element.client.cin,

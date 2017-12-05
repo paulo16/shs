@@ -65,3 +65,4 @@ cfs:standard-packages
 cfs:filesystem
 http
 babrahams:transactions
+lfergon:exportcsv
