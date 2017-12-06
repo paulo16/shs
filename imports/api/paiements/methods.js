@@ -355,10 +355,7 @@ Meteor.methods({
                 },
                 {
                     $group: {
-                        _id: {
-                            cin: "$client.cin",
-                            date_mise_service: "$client.date_mise_service",
-                        },
+                        _id: null,
                         total: {
                             $sum: "$montant"
                         }
