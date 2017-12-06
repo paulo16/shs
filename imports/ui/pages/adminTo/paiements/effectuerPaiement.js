@@ -15,6 +15,9 @@ import 'meteor/mrt:nprogress';
 import 'meteor/kevohagan:sweetalert';
 import 'meteor/natestrauser:select2';
 import './effectuerPaiement.html';
+import {
+    Session
+} from 'meteor/session';
 
 
 let infoClient;
@@ -27,6 +30,7 @@ Template.effectuerPaiement.onCreated(() => {
     Template.instance().genrecu = new ReactiveVar(false);
     Session.set('idpaiement', '');
     Session.set('contrat', contrat.ref_contrat);
+    Session.set('date_mise_service', '');
     Session.set('showhistorique', 'false');
 });
 
@@ -58,6 +62,7 @@ Template.effectuerPaiement.events({
                     let content = '<span> Aucun résulat trouvé</span>';
                     if (result && result != undefined && result != "") {
                         Session.set('cin', result.cin);
+                        Session.set('date_mise_service', result.contrat.date_mise_service);
                         infoClient = result;
                         content = '' +
                             '<div>' +
@@ -404,8 +409,9 @@ function showhistorique() {
                 let res2 = Session.get('result2');
                 ////console.log(JSON.stringify(result));
                 let element = '<div style="height: 70px;line-height: 70px;text-align: center;border: 1px dashed #f69c55;">';
-                let scp = (monthDiff(res2[0]._id.date_mise_service, new Date()) * 30) + 30;
-                let msp = monthDiff(res2[0]._id.date_mise_service, new Date()) + 1;
+                let date_mise_service = Session.get('date_mise_service');
+                let scp = (monthDiff(date_mise_service, new Date()) * 30) + 30;
+                let msp = monthDiff(date_mise_service, new Date()) + 1;
                 let sp = res2[0].total ? res2[0].total : 0;
                 let mp = Math.floor(sp / 30);
                 let sa = Math.abs(scp - sp);

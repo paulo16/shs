@@ -36,6 +36,7 @@ Template.profilebis.onCreated(function () {
             //console.log('le resultat' + JSON.stringify(result));
             result.date_mise_service = moment(result.contrat.date_mise_service).format("DD-MM-YYYY HH:mm");
             result.ref_contrat = result.contrat.ref_contrat;
+            Session.set('date_mise_service', result.contrat.date_mise_service);
             Session.set('info', result);
         }
 
@@ -68,8 +69,9 @@ Template.profilebis.onRendered(function () {
                 let res2 = Session.get('result2');
                 // console.log(JSON.stringify('les sommes ' + result));
                 let element = '<div style="height: 70px;line-height: 70px;text-align: center;border: 1px dashed #f69c55;">';
-                let scp = (monthDiff(res2[0]._id.date_mise_service, new Date()) * 30) + 30;
-                let msp = monthDiff(res2[0]._id.date_mise_service, new Date()) + 1;
+                let date_mise_service = Session.get('date_mise_service');
+                let scp = (monthDiff(date_mise_service, new Date()) * 30) + 30;
+                let msp = monthDiff(date_mise_service, new Date()) + 1;
                 let sp = res2[0].total ? res2[0].total : 0;
                 let mp = Math.floor(sp / 30);
                 let sa = Math.abs(scp - sp);
