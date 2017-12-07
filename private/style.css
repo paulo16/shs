@@ -3,7 +3,11 @@ TD {
     background-color: #ffffff;
     color: #000000;
     font-family: Arial;
-    font-size: 20pt;
+    font-size: 23pt;
+    height: 20px;
+    display: table-cell;
+    border: 1px solid black;
+    padding: 0em;
 }
 
 table {
@@ -17,11 +21,4 @@ table {
 
 tr {
     display: table-row;
-}
-
-td {
-    height: 20px;
-    display: table-cell;
-    border: 1px solid black;
-    padding: 0.6em;
 }
