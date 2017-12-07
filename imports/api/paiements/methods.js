@@ -96,20 +96,20 @@ Meteor.methods({
     },
 
     findHistorique: function (saisi) {
-        let varsaisi = new RegExp(saisi);
+        //let varsaisi = new RegExp(saisi);
 
         let paiements = Paiements.find({
             $or: [{
-                    'client.cin': varsaisi
+                    'client.cin': saisi
                 },
                 {
-                    'client.nom': varsaisi
+                    'client.nom': saisi
                 },
                 {
-                    'client.prenom': varsaisi
+                    'client.prenom': saisi
                 },
                 {
-                    'client.ref_contrat': varsaisi
+                    'client.ref_contrat': saisi
                 }
             ]
         }).fetch();
@@ -340,13 +340,13 @@ Meteor.methods({
         return mindate;
     },
 
-    SumPaiementParClient: function (client) {
+    SumPaiementParClient: function (client, cin) {
         let paiements;
         if (client) {
             paiements = Paiements.aggregate([{
                     $match: {
                         $or: [{
-                            'client.cin': client
+                            'client.cin': cin
                         }, {
                             'client.ref_contrat': client
                         }]

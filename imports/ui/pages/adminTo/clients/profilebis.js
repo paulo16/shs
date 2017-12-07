@@ -59,8 +59,9 @@ Template.profilebis.onRendered(function () {
     let currentUrl = FlowRouter.current();
     let idclient = currentUrl.queryParams.id;
     let contrat = currentUrl.queryParams.ref_contrat;
+    let cin = currentUrl.queryParams.cin;
 
-    Meteor.call('SumPaiementParClient', contrat, (error, result) => {
+    Meteor.call('SumPaiementParClient', contrat, cin, (error, result) => {
         if (error) {
             console.log(error);
         } else {
