@@ -51,7 +51,7 @@ Template.effectuerPaiement.events({
         //info sur le client 
 
         //Historique des paiements 
-        if ($('#input-search').val() != "" && $('#input-search').val().length >= 5) {
+        if ($('#input-search').val() != "" && $('#input-search').val().length >= 3) {
 
 
             Meteor.call('findClient', $('#input-search').val(), function (error, result) {
