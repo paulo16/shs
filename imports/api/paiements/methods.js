@@ -410,12 +410,8 @@ Meteor.methods({
             // PREPARE DATA
             var paiement = Paiements.findOne({
                 _id: id
-            }, {
-                fields: {
-                    'agent.numero_agent': 0
-                }
             });
-            console.log('paiements: ' + JSON.stringify(paiement));
+            //console.log('paiements: ' + JSON.stringify(paiement));
             let dtpaie = moment(paiement.date_paiement_manuelle).format("DD-MM-YYYY-HH-mm-ss");
             let dtp = moment(paiement.date_paiement_manuelle).format("DD-MM-YYYY HH:mm:ss");
             paiement.datepaiement = dtp;
