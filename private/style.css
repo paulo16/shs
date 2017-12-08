@@ -2,7 +2,7 @@ td {
     background-color: #ffffff;
     color: #000000;
     font-family: Arial;
-    font-size: 30pt;
+    font-size: 31pt;
     height: 20px;
     display: table-cell;
     border: 1px solid black;
@@ -11,7 +11,7 @@ td {
 
 table {
     display: table;
-    width: 100%;
+    /*width: 100%;*/
     border-collapse: collapse;
     size: 200px 880px;
     margin: 0px;
