@@ -425,7 +425,7 @@ Meteor.methods({
             var str = paiement.client.ref_contrat;
             var nouvelleStr = str.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "-");
             var laci = paiement.client.cin;
-            var lacin = laci.replace(/\ /g, "-");
+            var lacin = laci.replace(/\s/g, "");
             console.log(lacin);
 
             var fileName = dtpaie + '-' + lacin + ".pdf";
