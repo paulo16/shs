@@ -96,10 +96,11 @@ Meteor.methods({
     },
 
     findHistorique: function (saisi) {
-        let varsaisi = new RegExp(saisi);
+        //let varsaisi = new RegExp(saisi);
 
         let paiements = Paiements.find({
             $or: [{
+<<<<<<< HEAD
                 'client.cin': varsaisi
             },
             {
@@ -111,6 +112,19 @@ Meteor.methods({
             {
                 'client.ref_contrat': varsaisi
             }
+=======
+                    'client.cin': saisi
+                },
+                {
+                    'client.nom': saisi
+                },
+                {
+                    'client.prenom': saisi
+                },
+                {
+                    'client.ref_contrat': saisi
+                }
+>>>>>>> b2957918d886db2406bb1a39ab074a95b0125a95
             ]
         }).fetch();
         //console.log(paiements);
@@ -340,10 +354,11 @@ Meteor.methods({
         return mindate;
     },
 
-    SumPaiementParClient: function (client) {
+    SumPaiementParClient: function (client, cin) {
         let paiements;
         if (client) {
             paiements = Paiements.aggregate([{
+<<<<<<< HEAD
                 $match: {
                     $or: [{
                         'client.cin': client
@@ -351,6 +366,15 @@ Meteor.methods({
                         'client.ref_contrat': client
                     }]
                 }
+=======
+                    $match: {
+                        $or: [{
+                            'client.cin': cin
+                        }, {
+                            'client.ref_contrat': client
+                        }]
+                    }
+>>>>>>> b2957918d886db2406bb1a39ab074a95b0125a95
 
             },
             {
@@ -410,12 +434,8 @@ Meteor.methods({
             // PREPARE DATA
             var paiement = Paiements.findOne({
                 _id: id
-            }, {
-                    fields: {
-                        'agent.numero_agent': 0
-                    }
-                });
-            console.log('paiements: ' + JSON.stringify(paiement));
+            });
+            //console.log('paiements: ' + JSON.stringify(paiement));
             let dtpaie = moment(paiement.date_paiement_manuelle).format("DD-MM-YYYY-HH-mm-ss");
             let dtp = moment(paiement.date_paiement_manuelle).format("DD-MM-YYYY HH:mm:ss");
             paiement.datepaiement = dtp;

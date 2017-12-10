@@ -1,26 +1,23 @@
-BODY,
-TD {
+td {
     background-color: #ffffff;
     color: #000000;
     font-family: Arial;
-    font-size: 19pt;
+    font-size: 31pt;
+    height: 20px;
+    display: table-cell;
+    border: 1px solid black;
+    padding: 0em;
 }
 
 table {
     display: table;
-    width: 100%;
+    /*width: 100%;*/
     border-collapse: collapse;
-    size: 340px 630px;
+    size: 200px 880px;
     margin: 0px;
     
 }
 
 tr {
     display: table-row;
-}
-
-td {
-    display: table-cell;
-    border: 1px solid black;
-    padding: 0.6em;
 }
