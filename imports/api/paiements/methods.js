@@ -100,17 +100,17 @@ Meteor.methods({
 
         let paiements = Paiements.find({
             $or: [{
-                    'client.cin': varsaisi
-                },
-                {
-                    'client.nom': varsaisi
-                },
-                {
-                    'client.prenom': varsaisi
-                },
-                {
-                    'client.ref_contrat': varsaisi
-                }
+                'client.cin': varsaisi
+            },
+            {
+                'client.nom': varsaisi
+            },
+            {
+                'client.prenom': varsaisi
+            },
+            {
+                'client.ref_contrat': varsaisi
+            }
             ]
         }).fetch();
         //console.log(paiements);
@@ -140,18 +140,18 @@ Meteor.methods({
     findClientParProvince: function () {
 
         let clients = Paiements.aggregate([{
-                $group: {
-                    _id: "$client.province",
-                    count: {
-                        $sum: 1
-                    }
-                }
-            },
-            {
-                $sort: {
-                    count: 1
+            $group: {
+                _id: "$client.province",
+                count: {
+                    $sum: 1
                 }
             }
+        },
+        {
+            $sort: {
+                count: 1
+            }
+        }
         ]);
         //console.log(clients);
 
@@ -163,44 +163,44 @@ Meteor.methods({
         let paiements;
         if (datedebut && datefin) {
             paiements = Paiements.aggregate([{
-                    $match: {
-                        date_paiement_manuelle: {
-                            $gt: datedebut,
-                            $lt: datefin
-                        }
-                    }
-                },
-                {
-                    $group: {
-                        _id: "$client.province",
-                        total: {
-                            $sum: "$montant"
-                        }
-                    }
-                },
-                {
-                    $sort: {
-                        total: -1
+                $match: {
+                    date_paiement_manuelle: {
+                        $gt: datedebut,
+                        $lt: datefin
                     }
                 }
+            },
+            {
+                $group: {
+                    _id: "$client.province",
+                    total: {
+                        $sum: "$montant"
+                    }
+                }
+            },
+            {
+                $sort: {
+                    total: -1
+                }
+            }
             ]);
 
             return paiements;
 
         } else {
             paiements = Paiements.aggregate([{
-                    $group: {
-                        _id: "$client.province",
-                        total: {
-                            $sum: "$montant"
-                        }
-                    }
-                },
-                {
-                    $sort: {
-                        total: -1
+                $group: {
+                    _id: "$client.province",
+                    total: {
+                        $sum: "$montant"
                     }
                 }
+            },
+            {
+                $sort: {
+                    total: -1
+                }
+            }
             ]);
 
             return paiements;
@@ -212,33 +212,11 @@ Meteor.methods({
         let paiements;
         if (province) {
             paiements = Paiements.aggregate([{
-                    $match: {
-                        'client.province': province
-                    }
-                },
-                {
-                    $group: {
-                        _id: {
-                            year: {
-                                "$year": "$date_paiement_manuelle"
-                            }
-                        },
-                        total: {
-                            $sum: "$montant"
-                        }
-                    }
-                },
-                {
-                    $sort: {
-                        total: -1
-                    }
+                $match: {
+                    'client.province': province
                 }
-            ]);
-            ////console.log(paiements);
-            return paiements;
-        }
-
-        paiements = Paiements.aggregate([{
+            },
+            {
                 $group: {
                     _id: {
                         year: {
@@ -255,6 +233,28 @@ Meteor.methods({
                     total: -1
                 }
             }
+            ]);
+            ////console.log(paiements);
+            return paiements;
+        }
+
+        paiements = Paiements.aggregate([{
+            $group: {
+                _id: {
+                    year: {
+                        "$year": "$date_paiement_manuelle"
+                    }
+                },
+                total: {
+                    $sum: "$montant"
+                }
+            }
+        },
+        {
+            $sort: {
+                total: -1
+            }
+        }
         ]);
 
 
@@ -281,44 +281,44 @@ Meteor.methods({
         let paiements;
         if (datedebut && datefin) {
             paiements = Paiements.aggregate([{
-                    $match: {
-                        date_paiement_manuelle: {
-                            $gt: datedebut,
-                            $lt: datefin
-                        }
-                    }
-                },
-                {
-                    $group: {
-                        _id: "$client.province",
-                        total: {
-                            $sum: "$montant"
-                        }
-                    }
-                },
-                {
-                    $sort: {
-                        total: -1
+                $match: {
+                    date_paiement_manuelle: {
+                        $gt: datedebut,
+                        $lt: datefin
                     }
                 }
+            },
+            {
+                $group: {
+                    _id: "$client.province",
+                    total: {
+                        $sum: "$montant"
+                    }
+                }
+            },
+            {
+                $sort: {
+                    total: -1
+                }
+            }
             ]);
 
             return paiements;
 
         } else {
             paiements = Paiements.aggregate([{
-                    $group: {
-                        _id: "$client.province",
-                        total: {
-                            $sum: "$montant"
-                        }
-                    }
-                },
-                {
-                    $sort: {
-                        total: -1
+                $group: {
+                    _id: "$client.province",
+                    total: {
+                        $sum: "$montant"
                     }
                 }
+            },
+            {
+                $sort: {
+                    total: -1
+                }
+            }
             ]);
 
             return paiements;
@@ -344,23 +344,23 @@ Meteor.methods({
         let paiements;
         if (client) {
             paiements = Paiements.aggregate([{
-                    $match: {
-                        $or: [{
-                            'client.cin': client
-                        }, {
-                            'client.ref_contrat': client
-                        }]
-                    }
+                $match: {
+                    $or: [{
+                        'client.cin': client
+                    }, {
+                        'client.ref_contrat': client
+                    }]
+                }
 
-                },
-                {
-                    $group: {
-                        _id: null,
-                        total: {
-                            $sum: "$montant"
-                        }
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: {
+                        $sum: "$montant"
                     }
-                },
+                }
+            },
             ]);
 
             //console.log('paiements -' + JSON.stringify(paiements));
@@ -411,10 +411,10 @@ Meteor.methods({
             var paiement = Paiements.findOne({
                 _id: id
             }, {
-                fields: {
-                    'agent.numero_agent': 0
-                }
-            });
+                    fields: {
+                        'agent.numero_agent': 0
+                    }
+                });
             console.log('paiements: ' + JSON.stringify(paiement));
             let dtpaie = moment(paiement.date_paiement_manuelle).format("DD-MM-YYYY-HH-mm-ss");
             let dtp = moment(paiement.date_paiement_manuelle).format("DD-MM-YYYY HH:mm:ss");
@@ -429,7 +429,7 @@ Meteor.methods({
             var nouvelleStr = str.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "-");
             //console.log(nouvelleStr);
 
-            var fileName = dtpaie + '-' + paiement.client.cin + '-' + nouvelleStr + ".pdf";
+            var fileName = dtpaie + '-'+paiement.client.cin+".pdf";
 
             var html_string = SSR.render('layout', {
                 css: css,
@@ -463,17 +463,17 @@ Meteor.methods({
                 newFile.attachData(buffer, {
                     type: 'application/pdf'
                 }, (err) => {
-                    if (err) throw err;
+                    if (err) { console.log(err); return null }
                     newFile.name(fileName);
                     let fileObj = Pdfs.insert(newFile);
                     //console.log('insert pdf ok result: ', fileObj.original.name);
                     Paiements.update({
                         _id: id
                     }, {
-                        $set: {
-                            recu_pdf: fileName
-                        }
-                    });
+                            $set: {
+                                recu_pdf: fileName
+                            }
+                        });
                     let monpdf = Pdfs.findOne({
                         _id: fileObj._id
                     });
@@ -513,39 +513,39 @@ Meteor.methods({
                             Paiements.update({
                                 recu_pdf: fields.recu_pdf
                             }, {
-                                $set: {
-                                    nom: fields.nom,
-                                    agent: fields.agent,
-                                    client: fields.client,
-                                    montant: fields.montant,
-                                    recu_pdf: fields.recu_pdf,
-                                    date_paiement_auto: fields.date_paiement_auto,
-                                    date_paiement_manuelle: fields.date_paiement_manuelle,
-                                    type_paiement: fields.type_paiement,
-                                    emeteur_paiement_cin: fields.emeteur_paiement_cin,
-                                    virement: fields.virement,
+                                    $set: {
+                                        nom: fields.nom,
+                                        agent: fields.agent,
+                                        client: fields.client,
+                                        montant: fields.montant,
+                                        recu_pdf: fields.recu_pdf,
+                                        date_paiement_auto: fields.date_paiement_auto,
+                                        date_paiement_manuelle: fields.date_paiement_manuelle,
+                                        type_paiement: fields.type_paiement,
+                                        emeteur_paiement_cin: fields.emeteur_paiement_cin,
+                                        virement: fields.virement,
 
-                                }
-                            }, {
-                                upsert: true
-                            });
+                                    }
+                                }, {
+                                    upsert: true
+                                });
                         } else {
                             Paiements.update({
                                 recu_pdf: fields.recu_pdf
                             }, {
-                                $set: {
-                                    nom: fields.nom,
-                                    agent: fields.agent,
-                                    client: fields.client,
-                                    montant: fields.montant,
-                                    recu_pdf: fields.recu_pdf,
-                                    date_paiement_auto: fields.date_paiement_auto,
-                                    date_paiement_manuelle: fields.date_paiement_manuelle,
-                                    type_paiement: fields.type_paiement,
-                                }
-                            }, {
-                                upsert: true
-                            });
+                                    $set: {
+                                        nom: fields.nom,
+                                        agent: fields.agent,
+                                        client: fields.client,
+                                        montant: fields.montant,
+                                        recu_pdf: fields.recu_pdf,
+                                        date_paiement_auto: fields.date_paiement_auto,
+                                        date_paiement_manuelle: fields.date_paiement_manuelle,
+                                        type_paiement: fields.type_paiement,
+                                    }
+                                }, {
+                                    upsert: true
+                                });
 
                         }
                     },
@@ -554,39 +554,39 @@ Meteor.methods({
                             Paiements.update({
                                 recu_pdf: fields.recu_pdf
                             }, {
-                                $set: {
-                                    nom: fields.nom,
-                                    agent: fields.agent,
-                                    client: fields.client,
-                                    montant: fields.montant,
-                                    recu_pdf: fields.recu_pdf,
-                                    date_paiement_auto: fields.date_paiement_auto,
-                                    date_paiement_manuelle: fields.date_paiement_manuelle,
-                                    type_paiement: fields.type_paiement,
-                                    emeteur_paiement_cin: fields.emeteur_paiement_cin,
-                                    virement: fields.virement,
+                                    $set: {
+                                        nom: fields.nom,
+                                        agent: fields.agent,
+                                        client: fields.client,
+                                        montant: fields.montant,
+                                        recu_pdf: fields.recu_pdf,
+                                        date_paiement_auto: fields.date_paiement_auto,
+                                        date_paiement_manuelle: fields.date_paiement_manuelle,
+                                        type_paiement: fields.type_paiement,
+                                        emeteur_paiement_cin: fields.emeteur_paiement_cin,
+                                        virement: fields.virement,
 
-                                }
-                            }, {
-                                upsert: true
-                            });
+                                    }
+                                }, {
+                                    upsert: true
+                                });
                         } else {
                             Paiements.update({
                                 recu_pdf: fields.recu_pdf
                             }, {
-                                $set: {
-                                    nom: fields.nom,
-                                    agent: fields.agent,
-                                    client: fields.client,
-                                    montant: fields.montant,
-                                    recu_pdf: fields.recu_pdf,
-                                    date_paiement_auto: fields.date_paiement_auto,
-                                    date_paiement_manuelle: fields.date_paiement_manuelle,
-                                    type_paiement: fields.type_paiement,
-                                }
-                            }, {
-                                upsert: true
-                            });
+                                    $set: {
+                                        nom: fields.nom,
+                                        agent: fields.agent,
+                                        client: fields.client,
+                                        montant: fields.montant,
+                                        recu_pdf: fields.recu_pdf,
+                                        date_paiement_auto: fields.date_paiement_auto,
+                                        date_paiement_manuelle: fields.date_paiement_manuelle,
+                                        type_paiement: fields.type_paiement,
+                                    }
+                                }, {
+                                    upsert: true
+                                });
 
                         }
                     },
@@ -652,17 +652,17 @@ Meteor.methods({
         Paiements.update({
             _id: paie._id
         }, {
-            $set: {
-                montant: paie.montant,
-                date_paiement_manuelle: paie.date_paiement_manuelle,
-            }
-        }, Meteor.bindEnvironment(function (err) {
-            if (err) {
-                console.log(err);
-            } else {
-                fut.return(paie._id);
-            }
-        }));
+                $set: {
+                    montant: paie.montant,
+                    date_paiement_manuelle: paie.date_paiement_manuelle,
+                }
+            }, Meteor.bindEnvironment(function (err) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    fut.return(paie._id);
+                }
+            }));
 
         return fut.wait();
 
@@ -689,45 +689,45 @@ Meteor.methods({
             });
 
             paiements = Paiements.aggregate([{
-                    $match: {
-                        $and: [{
-                            date_paiement_auto: {
-                                $gt: filtre.dateDebut,
-                                $lt: filtre.dateFin
-                            },
-                            'agent.lastName': agent.profile.lastName
-                        }]
-                    }
-                },
-                {
-                    $group: {
-                        _id: "$client.ref_contrat",
-                        total: {
-                            $sum: "$montant"
-                        }
+                $match: {
+                    $and: [{
+                        date_paiement_auto: {
+                            $gt: filtre.dateDebut,
+                            $lt: filtre.dateFin
+                        },
+                        'agent.lastName': agent.profile.lastName
+                    }]
+                }
+            },
+            {
+                $group: {
+                    _id: "$client.ref_contrat",
+                    total: {
+                        $sum: "$montant"
                     }
                 }
+            }
             ]);
 
         } else {
             paiements = Paiements.aggregate([{
-                    $match: {
-                        $and: [{
-                            date_paiement_auto: {
-                                $gt: filtre.dateDebut,
-                                $lt: filtre.dateFin
-                            },
-                        }]
-                    }
-                },
-                {
-                    $group: {
-                        _id: "$client.ref_contrat",
-                        total: {
-                            $sum: "$montant"
-                        }
+                $match: {
+                    $and: [{
+                        date_paiement_auto: {
+                            $gt: filtre.dateDebut,
+                            $lt: filtre.dateFin
+                        },
+                    }]
+                }
+            },
+            {
+                $group: {
+                    _id: "$client.ref_contrat",
+                    total: {
+                        $sum: "$montant"
                     }
                 }
+            }
             ]);
         }
 
@@ -769,39 +769,39 @@ Meteor.methods({
                             Paiements.update({
                                 recu_pdf: fields.recu_pdf
                             }, {
-                                $set: {
-                                    nom: fields.nom,
-                                    agent: fields.agent,
-                                    client: fields.client,
-                                    montant: fields.montant,
-                                    recu_pdf: fields.recu_pdf,
-                                    date_paiement_auto: fields.date_paiement_auto,
-                                    date_paiement_manuelle: fields.date_paiement_manuelle,
-                                    type_paiement: fields.type_paiement,
-                                    emeteur_paiement_cin: fields.emeteur_paiement_cin,
-                                    virement: fields.virement,
+                                    $set: {
+                                        nom: fields.nom,
+                                        agent: fields.agent,
+                                        client: fields.client,
+                                        montant: fields.montant,
+                                        recu_pdf: fields.recu_pdf,
+                                        date_paiement_auto: fields.date_paiement_auto,
+                                        date_paiement_manuelle: fields.date_paiement_manuelle,
+                                        type_paiement: fields.type_paiement,
+                                        emeteur_paiement_cin: fields.emeteur_paiement_cin,
+                                        virement: fields.virement,
 
-                                }
-                            }, {
-                                upsert: true
-                            });
+                                    }
+                                }, {
+                                    upsert: true
+                                });
                         } else {
                             Paiements.update({
                                 recu_pdf: fields.recu_pdf
                             }, {
-                                $set: {
-                                    nom: fields.nom,
-                                    agent: fields.agent,
-                                    client: fields.client,
-                                    montant: fields.montant,
-                                    recu_pdf: fields.recu_pdf,
-                                    date_paiement_auto: fields.date_paiement_auto,
-                                    date_paiement_manuelle: fields.date_paiement_manuelle,
-                                    type_paiement: fields.type_paiement,
-                                }
-                            }, {
-                                upsert: true
-                            });
+                                    $set: {
+                                        nom: fields.nom,
+                                        agent: fields.agent,
+                                        client: fields.client,
+                                        montant: fields.montant,
+                                        recu_pdf: fields.recu_pdf,
+                                        date_paiement_auto: fields.date_paiement_auto,
+                                        date_paiement_manuelle: fields.date_paiement_manuelle,
+                                        type_paiement: fields.type_paiement,
+                                    }
+                                }, {
+                                    upsert: true
+                                });
 
                         }
                     },
@@ -810,39 +810,39 @@ Meteor.methods({
                             Paiements.update({
                                 recu_pdf: fields.recu_pdf
                             }, {
-                                $set: {
-                                    nom: fields.nom,
-                                    agent: fields.agent,
-                                    client: fields.client,
-                                    montant: fields.montant,
-                                    recu_pdf: fields.recu_pdf,
-                                    date_paiement_auto: fields.date_paiement_auto,
-                                    date_paiement_manuelle: fields.date_paiement_manuelle,
-                                    type_paiement: fields.type_paiement,
-                                    emeteur_paiement_cin: fields.emeteur_paiement_cin,
-                                    virement: fields.virement,
+                                    $set: {
+                                        nom: fields.nom,
+                                        agent: fields.agent,
+                                        client: fields.client,
+                                        montant: fields.montant,
+                                        recu_pdf: fields.recu_pdf,
+                                        date_paiement_auto: fields.date_paiement_auto,
+                                        date_paiement_manuelle: fields.date_paiement_manuelle,
+                                        type_paiement: fields.type_paiement,
+                                        emeteur_paiement_cin: fields.emeteur_paiement_cin,
+                                        virement: fields.virement,
 
-                                }
-                            }, {
-                                upsert: true
-                            });
+                                    }
+                                }, {
+                                    upsert: true
+                                });
                         } else {
                             Paiements.update({
                                 recu_pdf: fields.recu_pdf
                             }, {
-                                $set: {
-                                    nom: fields.nom,
-                                    agent: fields.agent,
-                                    client: fields.client,
-                                    montant: fields.montant,
-                                    recu_pdf: fields.recu_pdf,
-                                    date_paiement_auto: fields.date_paiement_auto,
-                                    date_paiement_manuelle: fields.date_paiement_manuelle,
-                                    type_paiement: fields.type_paiement,
-                                }
-                            }, {
-                                upsert: true
-                            });
+                                    $set: {
+                                        nom: fields.nom,
+                                        agent: fields.agent,
+                                        client: fields.client,
+                                        montant: fields.montant,
+                                        recu_pdf: fields.recu_pdf,
+                                        date_paiement_auto: fields.date_paiement_auto,
+                                        date_paiement_manuelle: fields.date_paiement_manuelle,
+                                        type_paiement: fields.type_paiement,
+                                    }
+                                }, {
+                                    upsert: true
+                                });
 
                         }
                     },
