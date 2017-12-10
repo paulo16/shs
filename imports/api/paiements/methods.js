@@ -95,22 +95,23 @@ Meteor.methods({
         return Paiements.find({}).count();
     },
 
-    findHistorique: function (saisi) {
-        //let varsaisi = new RegExp(saisi);
+    findHistorique: function (lasaisi) {
+        let saisi = new RegExp(lasaisi);
+        //let saisi = laci.replace(/ /g, "");
 
         let paiements = Paiements.find({
             $or: [{
-                    'client.cin': saisi
-                },
-                {
-                    'client.nom': saisi
-                },
-                {
-                    'client.prenom': saisi
-                },
-                {
-                    'client.ref_contrat': saisi
-                }
+                'client.cin': saisi
+            },
+            {
+                'client.nom': saisi
+            },
+            {
+                'client.prenom': saisi
+            },
+            {
+                'client.ref_contrat': saisi
+            }
             ]
         }).fetch();
         //console.log(paiements);
@@ -344,13 +345,13 @@ Meteor.methods({
         let paiements;
         if (client) {
             paiements = Paiements.aggregate([{
-                    $match: {
-                        $or: [{
-                            'client.cin': cin
-                        }, {
-                            'client.ref_contrat': client
-                        }]
-                    }
+                $match: {
+                    $or: [{
+                        'client.cin': cin
+                    }, {
+                        'client.ref_contrat': client
+                    }]
+                }
 
             },
             {
@@ -423,11 +424,11 @@ Meteor.methods({
 
             var str = paiement.client.ref_contrat;
             var nouvelleStr = str.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "-");
-            var laci= paiement.client.cin;
-            var lacin = laci.replace(/ /g,"-");
-            //console.log(nouvelleStr);
+            var laci = paiement.client.cin;
+            var lacin = laci.replace(/\ /g, "-");
+            console.log(lacin);
 
-            var fileName = dtpaie + '-'+lacin+".pdf";
+            var fileName = dtpaie + '-' + lacin + ".pdf";
 
             var html_string = SSR.render('layout', {
                 css: css,
