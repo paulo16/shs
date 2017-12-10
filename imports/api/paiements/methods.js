@@ -100,19 +100,6 @@ Meteor.methods({
 
         let paiements = Paiements.find({
             $or: [{
-<<<<<<< HEAD
-                'client.cin': varsaisi
-            },
-            {
-                'client.nom': varsaisi
-            },
-            {
-                'client.prenom': varsaisi
-            },
-            {
-                'client.ref_contrat': varsaisi
-            }
-=======
                     'client.cin': saisi
                 },
                 {
@@ -124,7 +111,6 @@ Meteor.methods({
                 {
                     'client.ref_contrat': saisi
                 }
->>>>>>> b2957918d886db2406bb1a39ab074a95b0125a95
             ]
         }).fetch();
         //console.log(paiements);
@@ -358,15 +344,6 @@ Meteor.methods({
         let paiements;
         if (client) {
             paiements = Paiements.aggregate([{
-<<<<<<< HEAD
-                $match: {
-                    $or: [{
-                        'client.cin': client
-                    }, {
-                        'client.ref_contrat': client
-                    }]
-                }
-=======
                     $match: {
                         $or: [{
                             'client.cin': cin
@@ -374,7 +351,6 @@ Meteor.methods({
                             'client.ref_contrat': client
                         }]
                     }
->>>>>>> b2957918d886db2406bb1a39ab074a95b0125a95
 
             },
             {
