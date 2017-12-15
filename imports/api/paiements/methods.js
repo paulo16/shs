@@ -96,7 +96,7 @@ Meteor.methods({
     },
 
     findHistorique: function (lasaisi) {
-        let saisi = new RegExp(lasaisi);
+        //let saisi = new RegExp(lasaisi);
         //let saisi = laci.replace(/ /g, "");
 
         let paiements = Paiements.find({
@@ -690,7 +690,7 @@ Meteor.methods({
             paiements = Paiements.aggregate([{
                 $match: {
                     $and: [{
-                        date_paiement_auto: {
+                        date_paiement_manuelle: {
                             $gt: filtre.dateDebut,
                             $lt: filtre.dateFin
                         },
