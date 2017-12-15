@@ -316,7 +316,7 @@ function showhistorique() {
                 //console.log(result);
                 //let content = '<span> Aucun résulat trouvé</span>';
                 let dataset = [
-                    ["", "", "", "", ""]
+                    ["", "", "", "", "",""]
                 ];
                 Session.set('result1', result1);
                 let res1 = Session.get('result1');
@@ -343,6 +343,7 @@ function showhistorique() {
                                 element.agent.lastName,
                                 element.client.cin,
                                 moment(element.date_paiement_auto).format("DD-MM-YYYY HH:mm"),
+                                moment(element.date_paiement_manuelle).format("DD-MM-YYYY HH:mm"),
                                 lien,
                                 //element.type_paiement,
                                 element.montant
@@ -388,7 +389,10 @@ function showhistorique() {
                             title: "client"
                         },
                         {
-                            title: "Date Paiement"
+                            title: "Date P Auto"
+                        },
+                        {
+                            title: "Date P Manuelle"
                         },
                         {
                             title: "Reçu"
