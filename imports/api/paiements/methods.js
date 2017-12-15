@@ -95,7 +95,7 @@ Meteor.methods({
         return Paiements.find({}).count();
     },
 
-    findHistorique: function (lasaisi) {
+    findHistorique: function (saisi) {
         //let saisi = new RegExp(lasaisi);
         //let saisi = laci.replace(/ /g, "");
 
