@@ -23,7 +23,7 @@ Meteor.methods({
     parseUploadClient: function (data) {
 
         // Insertion des clients
-        let dateRegExp1 = /^(\d{2})\/(\d{2})\/(\d{4})(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
+        let dateRegExp1 = /^(\d{2})\/(\d{2})\/(\d{4})(\s([0-1][0-9]|2[0-3]):([0-5][0-9])(\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00)))?){0,1}$/;
         let dateRegExp2 = /^([0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}){1}(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
 
         for (let i = 0; i < data.length; i++) {
@@ -41,14 +41,26 @@ Meteor.methods({
             });
 
             if (!exists) {
-                let dtService;
-
+                let dtService= item.dtservice;
                 if (dateRegExp1.test(item.dtservice)) {
-                    dtServiceIter = (item.dtservice).split("/");
-                    dtService = new Date(dtServiceIter[2], dtServiceIter[1] - 1, dtServiceIter[0]);
+                    dtu = item.dtservice;
+                    // console.log('tab dtupdate: ' + JSON.stringify(dtu));
+                    dtservice = dtu.split("/");
+                    day = dtservice[0].replace(/\s+/g, 'T');
+                    anneeHeure = dtservice[2].split(" ");
+                    annee = anneeHeure[0];
+                    heure = anneeHeure[1];
+                    mois = dtservice[1];
+                    dt = annee + "-" + mois + "-" + day + "T" + heure;
+                    // console.log('0: ' +dtupdate[0]);
+                    // console.log('1: ' +dtupdate[1]);
+                    //console.log('2: ' +dtupdate[2]);
+                    console.log('date service: ' + dt);
+                    dtService = new Date(dt);
                 } else if (dateRegExp2.test(item.dtservice)) {
-                    dtServiceIter = (item.dtservice).split("-");
-                    dtService = new Date(dtServiceIter[0], dtServiceIter[1] - 1, dtServiceIter[2]);
+                    dtService = dtService.replace(/\s+/g, 'T');
+                    console.log('date mise service: ' + dtService);
+                    dtService = new Date(dtService);
                 } else {
                     dtService = new Date('2001-01-01T00:00:00Z');
                 }
