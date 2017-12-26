@@ -23,6 +23,7 @@ Meteor.methods({
     parseUploadClient: function (data) {
 
         // Insertion des clients
+        let dateISO = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;        
         let dateRegExp1 = /^(\d{2})\/(\d{2})\/(\d{4})(\s([0-1][0-9]|2[0-3]):([0-5][0-9])(\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00)))?){0,1}$/;
         let dateRegExp2 = /^([0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}){1}(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
 
@@ -61,8 +62,8 @@ Meteor.methods({
                     dtService = dtService.replace(/\s+/g, 'T');
                     console.log('date mise service: ' + dtService);
                     dtService = new Date(dtService);
-                } else {
-                    dtService = new Date('2001-01-01T00:00:00Z');
+                }  else if (dateISO.test(item.dtservice) ){
+                    dtService = new Date(item.dtservice);
                 }
 
                 let contrat = {

@@ -26,6 +26,7 @@ Template.uploadPaiements.events({
           if (error) {
             console.log(error);
             template.uploading.set(false);
+            /*
             Meteor.call('removePaiements', (error1, result) => {
               if (result) {
                 swal(
@@ -36,7 +37,12 @@ Template.uploadPaiements.events({
               } else if (error1) {
                 console.log(error1);
               }
-            });
+            });*/
+            swal(
+              'Oops...',
+              'Problème au niveau des données, verifiez vos données les dates particulièrement !',
+              'error'
+            );
           } else if (response) {
             console.log('parseUpload complete .');
             template.uploading.set(false);
@@ -46,7 +52,6 @@ Template.uploadPaiements.events({
               title: 'Importation complete',
               text: 'Paiemesnts Totaux :' + response,
               showConfirmButton: false,
-              timer: 3000
             })
           }
         });

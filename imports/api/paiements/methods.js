@@ -17,6 +17,9 @@ import {
 import {
     HistoSync
 } from '/imports/api/histosync/histosync.js';
+import {
+    exists
+} from 'fs';
 
 
 Paiements.allow({
@@ -35,8 +38,8 @@ Meteor.methods({
 
     parseUploadPaiements: function (data) {
         // Insertion des clients
-
-        let dateRegExp = /^([0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}){1}(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
+        var varexitances;
+        let dateISO = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
         let dateRegExp1 = /^(\d{2})\/(\d{2})\/(\d{4})(\s([0-1][0-9]|2[0-3]):([0-5][0-9])(\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00)))?){0,1}$/;
 
         let dateRegExp2 = /^([0-9]{4}-(0[1-9]|1[0-2])-[0-9]{2}){1}(\s([0-1][0-9]|2[0-3]):([0-5][0-9])\:([0-5][0-9])( ([\-\+]([0-1][0-9])\:00))?){0,1}$/;
@@ -46,7 +49,7 @@ Meteor.methods({
             if (item) {
 
                 let dtupdate;
-               // console.log('item: ' + JSON.stringify(item));
+                // console.log('item: ' + JSON.stringify(item));
                 //console.log('dtupdate: ' + dateRegExp1.test(item.dtupdate));
                 if (dateRegExp1.test(item.dtupdate)) {
                     dtu = item.dtupdate;
@@ -68,8 +71,11 @@ Meteor.methods({
                     dtupdate = dt.replace(/\s+/g, 'T');
                     //console.log('date mise service: ' + dtupdate);
                     dtupdate = new Date(dtupdate);
-                } else {
-                    dtupdate = new Date('2001-01-01T00:00:00Z');
+                } else if (dateISO.test(item.dtupdate)) {
+                    dtupdate = new Date(item.dtupdate);
+                }else{
+                    console.log('Problème date : ' + item.dtservice+" -pdf : "+item.filename);
+                    //dtService = new Date("2001-01-01T00:00:00.000Z");
                 }
 
 
@@ -93,69 +99,80 @@ Meteor.methods({
                 } else if (dateRegExp2.test(item.dateSave)) {
                     dt = item.dateSave;
                     dateSave = dt.replace(/\s+/g, 'T');
-                   // console.log('date mise service: ' + dtService);
+                    // console.log('date mise service: ' + dtService);
                     dateSave = new Date(dateSave);
-                } else {
-                    dateSave = new Date('2001-01-01T00:00:00Z');
+                } else if (dateISO.test(item.dateSave)) {
+                    dateSave = new Date(item.dateSave);
+                }else{
+                    console.log('Problème date : ' + item.dtservice+" -pdf : "+item.filename);
+                    //dtService = new Date("2001-01-01T00:00:00.000Z");
                 }
-                exists = Paiements.findOne({
-                    date_paiement_auto: dtupdate,
-                    montant: item.total,
-                    recu_pdf: item.filename
-                });
+                let varfind = {
+                    "recu_pdf": item.filename
+                };
 
-                if (!exists && item.total != '' && item.total != undefined) {
+                 varexitances = Paiements.findOne(varfind);
+                //console.log('varfind:' + JSON.stringify(varfind));
+                //console.log('exist:' + JSON.stringify( varexitances));
 
-                    let agent = {
-                        numero_agent: item.agent,
-                        lastName: item.lastname
-                    };
-                    let dtService= item.dtservice;
-                    if (dateRegExp1.test(item.dtservice)) {
-                        dtu = item.dtservice;
-                        // console.log('tab dtupdate: ' + JSON.stringify(dtu));
-                        dtservice = dtu.split("/");
-                        day = dtservice[0].replace(/\s+/g, 'T');
-                        anneeHeure = dtservice[2].split(" ");
-                        annee = anneeHeure[0];
-                        heure = anneeHeure[1];
-                        mois = dtservice[1];
-                        dt = annee + "-" + mois + "-" + day + "T" + heure;
-                        // console.log('0: ' +dtupdate[0]);
-                        // console.log('1: ' +dtupdate[1]);
-                        //console.log('2: ' +dtupdate[2]);
-                        console.log('date service: ' + dt);
-                        dtService = new Date(dt);
-                    } else if (dateRegExp2.test(item.dtservice)) {
-                        dtService = dtService.replace(/\s+/g, 'T');
-                        //console.log('date mise service: ' + dtService);
-                        dtService = new Date(dtService);
-                    } else {
-                        dtService = new Date('2001-01-01T00:00:00Z');
+                if (!varexitances) {
+                    if (item.total != '' && item.total != undefined) {
+
+                        let agent = {
+                            numero_agent: item.agent,
+                            lastName: item.lastname
+                        };
+                        let dtService = item.dtservice;
+                        if (dateRegExp1.test(item.dtservice)) {
+                            dtu = item.dtservice;
+                            // console.log('tab dtupdate: ' + JSON.stringify(dtu));
+                            dtservice = dtu.split("/");
+                            day = dtservice[0].replace(/\s+/g, 'T');
+                            anneeHeure = dtservice[2].split(" ");
+                            annee = anneeHeure[0];
+                            heure = anneeHeure[1];
+                            mois = dtservice[1];
+                            dt = annee + "-" + mois + "-" + day + "T" + heure;
+                            // console.log('0: ' +dtupdate[0]);
+                            // console.log('1: ' +dtupdate[1]);
+                            //console.log('2: ' +dtupdate[2]);
+                            console.log('date service: ' + dt);
+                            dtService = new Date(dt);
+                        } else if (dateRegExp2.test(item.dtservice)) {
+                            dtService = dtService.replace(/\s+/g, 'T');
+                            //console.log('date mise service: ' + dtService);
+                            dtService = new Date(dtService);
+                        } else if (dateISO.test(item.dtservice)) {
+                            dtService = new Date(item.dtservice);
+                        }else{
+                            console.log('Problème date service: ' + item.dtservice+" -pdf : "+item.filename);
+                            dtService = new Date("2001-01-01T00:00:00.000Z");
+                        }
+
+                        let client = {
+                            ref_contrat: item.ref_customer,
+                            nom: item.nom,
+                            prenom: item.prenom,
+                            cin: item.cin,
+                            province: item.province,
+                            commune: item.commune,
+                            village: item.village,
+                            date_mise_service: dtService,
+                        };
+
+                        let paiement = {
+                            agent: agent,
+                            client: client,
+                            montant: item.total,
+                            type_paiement: item.typerecu,
+                            recu_pdf: item.filename,
+                            date_paiement_auto: dtupdate,
+                            date_paiement_manuelle: dateSave,
+                        }
+                        Paiements.insert(paiement);
                     }
-
-                    let client = {
-                        ref_contrat: item.ref_customer,
-                        nom: item.nom,
-                        prenom: item.prenom,
-                        cin: item.cin,
-                        province: item.province,
-                        commune: item.commune,
-                        village: item.village,
-                        date_mise_service: dtService,
-                    };
-
-                    let paiement = {
-                        agent: agent,
-                        client: client,
-                        montant: item.total,
-                        type_paiement: item.typerecu,
-                        recu_pdf: item.filename,
-                        date_paiement_auto: dtupdate,
-                        date_paiement_manuelle: dateSave,
-                    }
-                    Paiements.insert(paiement);
                 }
+
             }
         }
 
