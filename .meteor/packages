@@ -38,12 +38,11 @@ underscore@1.0.10
 aldeed:tabular
 aldeed:collection2-core
 natestrauser:select2
-
+monbro:mongodb-mapreduce-aggregation
 ostrio:flow-router-extra
 harrison:papa-parse
 meteorhacks:aggregate
 topperblues:reactive-datatables
-monbro:mongodb-mapreduce-aggregation
 rajit:bootstrap3-datepicker
 drewy:datetimepicker
 meteorhacks:unblock

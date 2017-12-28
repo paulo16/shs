@@ -8,7 +8,6 @@ import 'meteor/alanning:roles';
 import {
     Users
 } from './users.js';
-import 'meteor/monbro:mongodb-mapreduce-aggregation';
 
 Meteor.users.allow({
     insert: function (userId, doc) {

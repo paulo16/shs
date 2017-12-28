@@ -17,6 +17,7 @@ import '../../ui/pages/adminTo/not-found/not-found.js';
 import '../../ui/pages/adminTo/users/addUser.js';
 import '../../ui/pages/adminTo/uploads/clients.js';
 import '../../ui/pages/adminTo/uploads/paiements.js';
+import '../../ui/pages/adminTo/uploads/updatedatepaiements.js';
 import '../../ui/pages/adminTo/clients/listClients.js';
 import '../../ui/pages/adminTo/clients/addClient.js';
 import '../../ui/pages/adminTo/clients/profileClient.js';
@@ -129,6 +130,15 @@ authenticatedRoutes.route('/uploader-paiements', {
     action: function () {
         BlazeLayout.render("appLayout", {
             yield: "uploaderPaiements"
+        });
+    },
+});
+
+authenticatedRoutes.route('/update-date-paiements', {
+    name: 'updateDatePaiements',
+    action: function () {
+        BlazeLayout.render("appLayout", {
+            yield: "updatedatepaiements"
         });
     },
 });
