@@ -316,7 +316,7 @@ function showhistorique() {
                 //console.log(result);
                 //let content = '<span> Aucun résulat trouvé</span>';
                 let dataset = [
-                    ["", "", "", "", "",""]
+                    ["", "", "", "", "", "", ""]
                 ];
                 Session.set('result1', result1);
                 let res1 = Session.get('result1');
@@ -330,8 +330,8 @@ function showhistorique() {
                             if (element.recu_pdf) {
                                 lien = element.recu_pdf.replace(/.*pdfs\\/, "");
                             }
-                            if (typeof element.type_paiement === undefined) {
-                                element.type_paiement = "";
+                            if (!element.hasOwnProperty("type_paiement")) {
+                                element.type_paiement = "non-saisi";
 
                             }
 
@@ -345,8 +345,8 @@ function showhistorique() {
                                 moment(element.date_paiement_auto).format("DD-MM-YYYY HH:mm"),
                                 moment(element.date_paiement_manuelle).format("DD-MM-YYYY HH:mm"),
                                 lien,
-                                //element.type_paiement,
-                                element.montant
+                                element.montant,
+                                element.type_paiement,
 
                             ];
                             dataset.push(contenu);
@@ -383,23 +383,26 @@ function showhistorique() {
                         }
                     },
                     columns: [{
-                            title: "Nom agent"
-                        },
-                        {
-                            title: "client"
-                        },
-                        {
-                            title: "Date P Auto"
-                        },
-                        {
-                            title: "Date P Manuelle"
-                        },
-                        {
-                            title: "Reçu"
-                        },
-                        {
-                            title: "Montant"
-                        },
+                        title: "Nom agent"
+                    },
+                    {
+                        title: "client"
+                    },
+                    {
+                        title: "Date P Auto"
+                    },
+                    {
+                        title: "Date P Manuelle"
+                    },
+                    {
+                        title: "Reçu"
+                    },
+                    {
+                        title: "Montant"
+                    },
+                    {
+                        title: "Type"
+                    }
                     ]
                 });
             }
@@ -465,20 +468,20 @@ function showhistorique() {
                 }
             },
             columns: [{
-                    title: "Nom agent"
-                },
-                {
-                    title: "client"
-                },
-                {
-                    title: "Date Paiement"
-                },
-                {
-                    title: "Reçu"
-                },
-                {
-                    title: "Montant"
-                },
+                title: "Nom agent"
+            },
+            {
+                title: "client"
+            },
+            {
+                title: "Date Paiement"
+            },
+            {
+                title: "Reçu"
+            },
+            {
+                title: "Montant"
+            },
             ]
         });
         $('#les-montants').html('');
